@@ -1,0 +1,35 @@
+{
+  "name": "Terraform 30-Day Mastery Tracker",
+  "short_name": "Terraform Mastery",
+  "description": "Master Terraform in 30 days with daily challenges and progress tracking",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#5c6ac4",
+  "theme_color": "#5c6ac4",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity", "developer"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "./",
+  "id": "./",
+  "icons": [
+    { "src": "./tf-icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./tf-icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./tf-icon-192x192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's Tasks",
+      "short_name": "Today",
+      "description": "View today's Terraform learning tasks",
+      "url": "./?action=today",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHJ4PSIxMiIgZmlsbD0iIzVjNmFjNCIvPjxwYXRoIGZpbGw9IndoaXRlIiBkPSJNNDggMjRDMzYuOSAyNCAyOCAzMi45IDI4IDQ0VjUySDQ4VjU2SDQ4VjY0SDU2SDY4VjU2VjQ0QzY4IDMyLjkgNTkuMSAyNCA0OCAyNFoiLz48L3N2Zz4=",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
