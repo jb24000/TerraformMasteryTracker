@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Terraform 30-Day Mastery</title>
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#5c6ac4">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Terraform Mastery">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Master Terraform in 30 days with daily challenges and progress tracking">
+  <link rel="icon" type="image/png" sizes="192x192" href="./tf-icon-192x192.png">
+  <link rel="apple-touch-icon" href="./tf-icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./tf-icon-192x192.png">
+  <link rel="manifest" href="manifest-terraform.json" id="manifestLink">
+
+  <script>
+    // GitHub Pages-safe base path
+    const currentPath = window.location.pathname;
+    let basePath = '/';
+    if (currentPath.includes('/') && window.location.hostname.includes('github.io')) {
+      const parts = currentPath.split('/').filter(Boolean);
+      if (parts.length) basePath = `/${parts[0]}/`;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const manifestLink = document.getElementById('manifestLink');
+      manifestLink.href = basePath + 'manifest-terraform.json';
+    });
+    window.APP_BASE_PATH = basePath;
+  </script>
+
+  <!-- Reuse your existing CSS from the Python app unchanged -->
+  <style>
+    /* paste the exact same CSS from your Python app here */
+  </style>
+</head>
+<body>
+  <!-- same HTML structure; just swap the copy -->
+  <div class="background-decoration"><div class="floating-shape"></div><div class="floating-shape"></div><div class="floating-shape"></div></div>
+  <div class="container">
+    <div class="header">
+      <h1>🏗️ Terraform 30-Day Mastery</h1>
+      <p>Build IaC skills with daily Terraform challenges</p>
+      <div class="progress-ring">
+        <svg><circle cx="70" cy="70" r="62" class="bg"></circle><circle cx="70" cy="70" r="62" class="progress" id="progressCircle"></circle></svg>
+        <div class="progress-text" id="progressText">0%</div>
+      </div>
+    </div>
+
+    <button class="install-prompt show" id="installPrompt">📱 Install App - Get the full native experience!</button>
+
+    <div class="stats">
+      <div class="stat-card"><div class="stat-number" id="currentStreak">0</div><div class="stat-label">Day Streak <span class="streak-fire" id="streakFire" style="display:none;">🔥</span></div></div>
+      <div class="stat-card"><div class="stat-number" id="totalDays">0</div><div class="stat-label">Days Completed</div></div>
+    </div>
+
+    <div class="notification-status notification-disabled" id="notificationStatus">📱 Enable notifications for daily reminders</div>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="enableNotifications">🔔 Enable Alerts</button>
+      <button class="btn btn-secondary" id="resetProgress">🔄 Reset</button>
+    </div>
+
+    <div class="current-week">
+      <div class="week-nav">
+        <button class="nav-btn" id="prevDay">← Prev</button>
+        <div class="week-title" id="dayTitle">Day 1</div>
+        <button class="nav-btn" id="nextDay">Next →</button>
+      </div>
+      <ul class="task-list" id="taskList"></ul>
+    </div>
+
+    <div id="achievementContainer"></div>
+  </div>
+
+  <script>
+    class TerraformDailyTracker {
+      constructor() {
+        this.currentDay = 0;
+        this.completedTasks = {};
+        this.startDate = null;
+        this.notificationsEnabled = false;
+        this.achievements = [];
+        this.deferredPrompt = null;
+
+        // 🔁 Seed curriculum (first 5 days as sample — extend to 30 any time)
+        this.days = [
+          {
+            title: "Day 1: Install & Init",
+            tasks: [
+              { text: "Install Terraform CLI; pick a provider (AWS/Azure/GCP)", time: "Morning (20min)", links: [
+                { name: "Install Terraform", url: "https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli" }
+              ]},
+              { text: "Create a new folder, write a minimal main.tf, run init", time: "Evening (30min)", links: [
+                { name: "CLI Basics", url: "https://developer.hashicorp.com/terraform/cli" }
+              ]}
+            ]
+          },
+          {
+            title: "Day 2: Providers & Resources",
+            tasks: [
+              { text: "Configure a provider block with credentials (env vars)", time: "Morning (30min)", links: [
+                { name: "Providers", url: "https://developer.hashicorp.com/terraform/language/providers" }
+              ]},
+              { text: "Create a simple resource (e.g., S3 bucket / RG)", time: "Evening (30min)", links: [
+                { name: "Resources", url: "https://developer.hashicorp.com/terraform/language/resources" }
+              ]}
+            ]
+          },
+          {
+            title: "Day 3: Variables & Outputs",
+            tasks: [
+              { text: "Add variables.tf and use tfvars", time: "Morning (30min)", links: [
+                { name: "Variables", url: "https://developer.hashicorp.com/terraform/language/values/variables" }
+              ]},
+              { text: "Define outputs for key attributes", time: "Evening (20min)", links: [
+                { name: "Outputs", url: "https://developer.hashicorp.com/terraform/language/values/outputs" }
+              ]}
+            ]
+          },
+          {
+            title: "Day 4: State & Backends",
+            tasks: [
+              { text: "Understand state; add a remote backend", time: "Morning (30min)", links: [
+                { name: "State", url: "https://developer.hashicorp.com/terraform/language/state" },
+                { name: "Backends", url: "https://developer.hashicorp.com/terraform/language/settings/backends/configuration" }
+              ]},
+              { text: "Enable state locking (DynamoDB/Storage Account)", time: "Evening (20min)", links: [] }
+            ]
+          },
+          {
+            title: "Day 5: Modules & DRY",
+            tasks: [
+              { text: "Refactor into a local module", time: "Morning (30min)", links: [
+                { name: "Modules", url: "https://developer.hashicorp.com/terraform/language/modules" }
+              ]},
+              { text: "Try a Registry module & version pinning", time: "Evening (30min)", links: [
+                { name: "Registry", url: "https://registry.terraform.io/" }
+              ]}
+            ]
+          }
+        ];
+
+        this.loadData();
+        this.init();
+        this.setupPWA();
+        this.scheduleNotifications();
+      }
+
+      /* ——— Everything below is the same logic as your Python app ——— */
+      init(){ this.updateUI(); this.bindEvents(); this.checkForAchievements(); }
+      setupPWA(){
+        window.terraformTrackerInstance = this;
+        window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); this.deferredPrompt=e; window.deferredPrompt=e; this.showInstallPrompt(); });
+        const btn=document.getElementById('installPrompt');
+        if(btn){ btn.addEventListener('click',(e)=>{ e.preventDefault(); this.installPWA(); }); }
+        window.addEventListener('appinstalled',()=>{ this.hideInstallPrompt(); this.deferredPrompt=null; window.deferredPrompt=null; });
+        if (window.matchMedia('(display-mode: standalone)').matches) this.hideInstallPrompt();
+      }
+      showInstallPrompt(){ const el=document.getElementById('installPrompt'); if(el){ el.classList.add('show'); el.style.display='block'; } }
+      hideInstallPrompt(){ const el=document.getElementById('installPrompt'); if(el){ el.classList.remove('show'); el.style.display='none'; } }
+      async installPWA(){
+        const p=this.deferredPrompt||window.deferredPrompt;
+        if(!p){ return this.showManualInstallInstructions(); }
+        try{ await p.prompt(); const { outcome }=await p.userChoice; if(outcome==='accepted'){ this.hideInstallPrompt(); this.showNotification('🎉 App installed! Terraform offline ready.'); } }
+        catch{ this.showManualInstallInstructions(); }
+        this.deferredPrompt=null; window.deferredPrompt=null;
+      }
+      showManualInstallInstructions(){
+        const isChrome=/Chrome/.test(navigator.userAgent)&&!/Edg/.test(navigator.userAgent);
+        const isEdge=/Edg/.test(navigator.userAgent);
+        const isSafari=/Safari/.test(navigator.userAgent)&&!/Chrome/.test(navigator.userAgent);
+        let s='Install this app:\n\n';
+        if(isChrome){ s+='Chrome: ⋮ → More tools → Create shortcut → ✓ Open as window'; }
+        else if(isEdge){ s+='Edge: ⋯ → Apps → Install this site as an app'; }
+        else if(isSafari){ s+='Safari: Share → Add to Home Screen'; }
+        else { s+='Browser menu → Install app'; }
+        alert(s);
+      }
+      bindEvents(){
+        document.getElementById('enableNotifications').addEventListener('click',()=>this.enableNotifications());
+        document.getElementById('resetProgress').addEventListener('click',()=>{ if(confirm('Reset all progress?')) this.resetProgress(); });
+        document.getElementById('prevDay').addEventListener('click',()=>{ if(this.currentDay>0){ this.currentDay--; this.updateUI(); this.saveData(); } });
+        document.getElementById('nextDay').addEventListener('click',()=>{ if(this.currentDay<this.days.length-1){ this.currentDay++; this.updateUI(); this.saveData(); } });
+      }
+      updateUI(){ this.renderDay(); this.updateProgress(); this.updateStats(); this.updateNotificationStatus(); this.updateNavButtons(); }
+      updateNavButtons(){ prevDay.disabled=this.currentDay===0; nextDay.disabled=this.currentDay===this.days.length-1; }
+      renderDay(){
+        const d=this.days[this.currentDay]; dayTitle.textContent=d.title; taskList.innerHTML='';
+        d.tasks.forEach((t,i)=>{ const id=`d${this.currentDay}_t${i}`; const done=!!this.completedTasks[id];
+          const li=document.createElement('li'); li.className='task-item';
+          const links=(t.links||[]).map(l=>`<a href="${l.url}" target="_blank" class="task-link">📚 ${l.name}</a>`).join(' ');
+          li.innerHTML=`<div class="task-checkbox ${done?'completed':''}" data-task="${id}"></div>
+            <div class="task-content"><div class="task-text ${done?'completed':''}">${t.text}</div>
+              <div class="task-links">${links}</div><div class="task-time">${t.time}</div></div>`;
+          li.querySelector('.task-checkbox').addEventListener('click',()=>this.toggleTask(id));
+          taskList.appendChild(li);
+        });
+      }
+      toggleTask(id){ this.completedTasks[id]=!this.completedTasks[id]; this.saveData(); this.updateUI(); this.checkForAchievements(); if(this.completedTasks[id]) this.showTaskComplete(); }
+      showTaskComplete(){ document.body.style.background='linear-gradient(135deg,#4ade80 0%,#5c6ac4 100%)'; if(navigator.vibrate) navigator.vibrate(100); setTimeout(()=>document.body.style.background='',400); }
+      updateProgress(){
+        const total=this.days.reduce((s,d)=>s+d.tasks.length,0);
+        const done=Object.values(this.completedTasks).filter(Boolean).length;
+        const pct=Math.round((done/total)*100)||0;
+        const c=document.getElementById('progressCircle'); const R=62, C=2*Math.PI*R, off=C-(pct/100)*C;
+        c.style.strokeDasharray=`${C} ${C}`; c.style.strokeDashoffset=off; progressText.textContent=`${pct}%`;
+      }
+      updateStats(){
+        const streak=this.calculateStreak(), days=this.calculateTotalDays();
+        currentStreak.textContent=streak; totalDays.textContent=days; streakFire.style.display=streak>=3?'inline-block':'none';
+      }
+      calculateStreak(){ let s=0; for(let i=this.currentDay;i>=0;i--){ const d=this.days[i]; const all=d.tasks.every((_,idx)=>this.completedTasks[`d${i}_t${idx}`]); if(all) s++; else break; } return s; }
+      calculateTotalDays(){ let n=0; for(let i=0;i<this.days.length;i++){ const d=this.days[i]; const all=d.tasks.every((_,idx)=>this.completedTasks[`d${i}_t${idx}`]); if(all) n++; } return n; }
+      async enableNotifications(){
+        if(!('Notification' in window)) return alert('Notifications not supported.');
+        const perm=await Notification.requestPermission(); if(perm==='granted'){ this.notificationsEnabled=true; this.saveData(); this.updateNotificationStatus(); this.scheduleNotifications(); this.showNotification('🎉 Notifications enabled for Terraform!'); }
+      }
+      updateNotificationStatus(){ const s=document.getElementById('notificationStatus'); if(this.notificationsEnabled){ s.textContent='✅ Daily notifications enabled'; s.className='notification-status notification-enabled'; } else { s.textContent='📱 Enable notifications for daily reminders'; s.className='notification-status notification-disabled'; } }
+      scheduleNotifications(){ if(!this.notificationsEnabled) return; this.scheduleAt(9,0,"🌅 Morning Terraform practice (20–30m)"); this.scheduleAt(19,0,"🌆 Evening Terraform session — keep the streak!"); }
+      scheduleAt(h,m,msg){ const now=new Date(); const t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0); if(t<=now) t.setDate(t.getDate()+1); const delay=t-now;
+        setTimeout(()=>{ this.showNotification(msg); setInterval(()=>this.showNotification(msg),24*60*60*1000); },delay);
+      }
+      showNotification(body){
+        if(this.notificationsEnabled && 'Notification' in window && Notification.permission==='granted'){
+          new Notification('Terraform Mastery Tracker',{ body, icon: 'tf-icon-192x192.png', badge: 'tf-icon-192x192.png', vibrate:[200,100,200], requireInteraction: false });
+        }
+      }
+      checkForAchievements(){
+        const done=Object.values(this.completedTasks).filter(Boolean).length, streak=this.calculateStreak(); const newly=[];
+        if(done>=1 && !this.achievements.includes('first')) newly.push({id:'first',text:'🎯 First Task Complete!'});
+        if(done>=7 && !this.achievements.includes('week')) newly.push({id:'week',text:'📚 Week Warrior - 7 tasks completed!'});
+        if(streak>=7 && !this.achievements.includes('streak')) newly.push({id:'streak',text:'🔥 Streak Master - 7 days in a row!'});
+        if(done>=30 && !this.achievements.includes('half')) newly.push({id:'half',text:'🏗️ Terraform Hero - Halfway there!'});
+        if(done>=60 && !this.achievements.includes('full')) newly.push({id:'full',text:'🏆 Terraform Master - 30 Days Complete!'});
+        newly.forEach(a=>{ this.achievements.push(a.id); this.showAchievement(a.text); });
+        if(newly.length) this.saveData();
+      }
+      showAchievement(t){ const c=document.getElementById('achievementContainer'); const n=document.createElement('div'); n.className='achievement'; n.textContent=t; c.appendChild(n); if(navigator.vibrate) navigator.vibrate([200,100,200]); setTimeout(()=>n.remove(),4000); }
+      resetProgress(){ this.completedTasks={}; this.startDate=null; this.achievements=[]; this.currentDay=0; this.saveData(); this.updateUI(); }
+      saveData(){ localStorage.setItem('terraformTrackerData', JSON.stringify({ completedTasks:this.completedTasks, currentDay:this.currentDay, startDate:this.startDate, notificationsEnabled:this.notificationsEnabled, achievements:this.achievements })); }
+      loadData(){ const d=JSON.parse(localStorage.getItem('terraformTrackerData')||'{}'); this.completedTasks=d.completedTasks||{}; this.currentDay=d.currentDay||0; this.startDate=d.startDate||new Date().toISOString(); this.notificationsEnabled=!!d.notificationsEnabled; this.achievements=d.achievements||[]; }
+    }
+    window.addEventListener('load', ()=>{ new TerraformDailyTracker(); });
+    if('serviceWorker' in navigator){ navigator.serviceWorker.register(window.APP_BASE_PATH+'sw-terraform.js').then(()=>console.log('SW registered tf')).catch(console.warn); }
+  </script>
+</body>
+</html>
