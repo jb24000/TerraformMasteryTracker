@@ -19,8 +19,8 @@
 
     <!-- PWA Manifest (auto-detect base path for GitHub Pages) -->
     <link rel="manifest" href="manifest.json" id="manifestLink">
-
-    <script>
+    
+        <script>
         // Detect base path for GitHub Pages (repo site) vs root (user/org site)
         const currentPath = window.location.pathname;
         let basePath = '/';
@@ -30,7 +30,8 @@
         }
         document.addEventListener('DOMContentLoaded', () => {
             const manifestLink = document.getElementById('manifestLink');
-            manifestLink.href = basePath + 'manifest.json';
+            manifestLink.href = window.APP_BASE_PATH + 'manifest.json';
+
         });
         window.APP_BASE_PATH = basePath;
     </script>
