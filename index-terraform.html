@@ -1,250 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Terraform 30-Day Mastery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terraform 30-Day Mastery (AWS)</title>
 
-  <!-- PWA -->
-  <meta name="theme-color" content="#5c6ac4">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Terraform Mastery">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="description" content="Master Terraform in 30 days with daily challenges and progress tracking">
-  <link rel="icon" type="image/png" sizes="192x192" href="./tf-icon-192x192.png">
-  <link rel="apple-touch-icon" href="./tf-icon-192x192.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./tf-icon-192x192.png">
-  <link rel="manifest" href="manifest-terraform.json" id="manifestLink">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0ea5e9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Terraform Mastery">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Master Terraform on AWS in 30 days with daily hands-on tasks and progress tracking.">
 
-  <script>
-    // GitHub Pages-safe base path
-    const currentPath = window.location.pathname;
-    let basePath = '/';
-    if (currentPath.includes('/') && window.location.hostname.includes('github.io')) {
-      const parts = currentPath.split('/').filter(Boolean);
-      if (parts.length) basePath = `/${parts[0]}/`;
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      const manifestLink = document.getElementById('manifestLink');
-      manifestLink.href = basePath + 'manifest-terraform.json';
-    });
-    window.APP_BASE_PATH = basePath;
-  </script>
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192x192.png">
+    <link rel="apple-touch-icon" href="./icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon-192x192.png">
 
-  <!-- Reuse your existing CSS from the Python app unchanged -->
-  <style>
-    /* paste the exact same CSS from your Python app here */
-  </style>
+    <!-- PWA Manifest (auto-detect base path for GitHub Pages) -->
+    <link rel="manifest" href="manifest.json" id="manifestLink">
+
+    <script>
+        // Detect base path for GitHub Pages (repo site) vs root (user/org site)
+        const currentPath = window.location.pathname;
+        let basePath = '/';
+        if (currentPath.includes('/') && window.location.hostname.includes('github.io')) {
+            const parts = currentPath.split('/').filter(Boolean);
+            if (parts.length > 0) basePath = `/${parts[0]}/`;
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const manifestLink = document.getElementById('manifestLink');
+            manifestLink.href = basePath + 'manifest.json';
+        });
+        window.APP_BASE_PATH = basePath;
+    </script>
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+            --success-color: #22c55e;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh; color: white; overflow-x: hidden;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        }
+        .background-decoration{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+        .floating-shape{position:absolute;border-radius:50%;background:rgba(255,255,255,0.06);animation:float 6s ease-in-out infinite}
+        .floating-shape:nth-child(1){width:90px;height:90px;top:20%;left:8%;animation-delay:0s}
+        .floating-shape:nth-child(2){width:140px;height:140px;top:65%;right:10%;animation-delay:2s}
+        .floating-shape:nth-child(3){width:70px;height:70px;bottom:18%;left:22%;animation-delay:4s}
+        @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-22px) rotate(180deg)}}
+
+        .container{max-width:420px;margin:0 auto;padding:20px;position:relative;z-index:1}
+        .header{text-align:center;margin-bottom:30px;animation:slideInDown .8s ease-out}
+        .header h1{font-size:28px;margin-bottom:8px;font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+        .header p{font-size:14px;opacity:.95;margin-bottom:18px}
+        .progress-ring{width:140px;height:140px;margin:0 auto 20px;position:relative;filter:drop-shadow(0 4px 20px rgba(0,0,0,.2))}
+        .progress-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+        .progress-ring circle{fill:none;stroke-width:6}
+        .progress-ring .bg{stroke:rgba(255,255,255,.15)}
+        .progress-ring .progress{stroke:var(--success-color);stroke-linecap:round;transition:stroke-dasharray 1s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 8px rgba(34,197,94,.45))}
+        .progress-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+
+        .stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:30px;animation:slideInUp .8s ease-out .2s both}
+        .stat-card{background:var(--glass-bg);padding:20px;border-radius:20px;text-align:center;backdrop-filter:blur(20px);border:1px solid var(--glass-border);box-shadow:var(--shadow);transition:all .3s cubic-bezier(.4,0,.2,1)}
+        .stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+        .stat-number{font-size:32px;font-weight:800;margin-bottom:8px;background:linear-gradient(45deg,#fff,#e2e8f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .stat-label{font-size:13px;opacity:.9;font-weight:600}
+
+        .install-prompt{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;padding:16px;border-radius:16px;margin-bottom:20px;text-align:center;font-weight:700;cursor:pointer;transition:all .3s ease;border:none;width:100%;font-size:14px;display:none;animation:pulse 2s infinite}
+        .install-prompt.show{display:block}
+        .install-prompt:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(34,197,94,.3)}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+
+        .current-week{background:var(--glass-bg);padding:24px;border-radius:20px;margin-bottom:20px;backdrop-filter:blur(20px);border:1px solid var(--glass-border);box-shadow:var(--shadow);animation:slideInUp .8s ease-out .4s both}
+        .week-title{font-size:18px;font-weight:800;margin-bottom:20px;text-align:center}
+        .task-list{list-style:none}
+        .task-item{display:flex;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);transition:all .3s ease}
+        .task-item:last-child{border-bottom:none}
+        .task-item:hover{transform:translateX(4px)}
+        .task-checkbox{width:24px;height:24px;border:2px solid rgba(255,255,255,.4);border-radius:12px;margin-right:16px;cursor:pointer;position:relative;transition:all .3s cubic-bezier(.4,0,.2,1);flex-shrink:0;margin-top:2px}
+        .task-checkbox:hover{border-color:var(--success-color);transform:scale(1.1)}
+        .task-checkbox.completed{background:var(--success-color);border-color:var(--success-color);animation:checkPop .4s ease-out}
+        .task-checkbox.completed::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:14px;font-weight:800}
+        @keyframes checkPop{0%{transform:scale(.8)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+        .task-content{flex:1}
+        .task-text{font-size:15px;margin-bottom:10px;font-weight:600;line-height:1.4;transition:all .3s ease}
+        .task-text.completed{opacity:.7;text-decoration:line-through}
+        .task-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+        .task-link{background:rgba(34,197,94,.15);color:#bbf7d0;padding:6px 12px;border-radius:20px;text-decoration:none;font-size:12px;font-weight:800;border:1px solid rgba(34,197,94,.35);transition:all .3s cubic-bezier(.4,0,.2,1)}
+        .task-link:hover{background:rgba(34,197,94,.25);transform:translateY(-1px);box-shadow:0 4px 12px rgba(34,197,94,.25)}
+        .task-time{font-size:12px;opacity:.8;font-style:italic;font-weight:600}
+
+        .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;animation:slideInUp .8s ease-out .6s both}
+        .btn{padding:14px 20px;border:none;border-radius:16px;font-size:14px;font-weight:800;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(20px);border:1px solid var(--glass-border)}
+        .btn-primary{background:linear-gradient(45deg,#22c55e,#16a34a);color:white;box-shadow:0 4px 15px rgba(34,197,94,.3)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(34,197,94,.4)}
+        .btn-secondary{background:var(--glass-bg);color:white;box-shadow:var(--shadow)}
+        .btn-secondary:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);background:rgba(255,255,255,.15)}
+
+        .notification-status{text-align:center;padding:14px;border-radius:16px;margin-bottom:20px;font-size:13px;font-weight:700;backdrop-filter:blur(20px);border:1px solid var(--glass-border)}
+        .notification-enabled{background:rgba(34,197,94,.22);border-color:rgba(34,197,94,.33)}
+        .notification-disabled{background:rgba(239,68,68,.22);border-color:rgba(239,68,68,.33)}
+
+        .week-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .nav-btn{background:var(--glass-bg);border:1px solid var(--glass-border);color:white;padding:10px 16px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:800;transition:all .3s ease;backdrop-filter:blur(20px)}
+        .nav-btn:hover:not(:disabled){transform:translateY(-1px);background:rgba(255,255,255,.15)}
+        .nav-btn:disabled{opacity:.4;cursor:not-allowed}
+
+        .streak-fire{display:inline-block;margin-left:6px;animation:flicker 1.5s infinite alternate}
+        @keyframes flicker{0%{opacity:1;transform:scale(1)}100%{opacity:.8;transform:scale(1.1)}}
+        .achievement{background:linear-gradient(45deg,#ffd700,#ffed4e);color:#1a1a1a;padding:16px;border-radius:16px;margin:12px 0;text-align:center;font-weight:900;animation:achievementBounce .8s cubic-bezier(.68,-.55,.265,1.55);box-shadow:0 8px 25px rgba(255,215,0,.3)}
+        @keyframes achievementBounce{0%{opacity:0;transform:translateY(50px) scale(.3)}50%{transform:translateY(-10px) scale(1.05)}100%{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes slideInDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+        @media (max-width:480px){
+            .container{padding:16px}
+            .header h1{font-size:24px}
+            .progress-ring{width:120px;height:120px}
+            .progress-text{font-size:20px}
+            .stat-number{font-size:28px}
+            .current-week{padding:20px}
+        }
+        @media (display-mode: standalone){ body{ padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);} }
+        @media (prefers-color-scheme: dark){ :root{ --glass-bg: rgba(255,255,255,.08); --glass-border: rgba(255,255,255,.15);} }
+    </style>
 </head>
 <body>
-  <!-- same HTML structure; just swap the copy -->
-  <div class="background-decoration"><div class="floating-shape"></div><div class="floating-shape"></div><div class="floating-shape"></div></div>
-  <div class="container">
-    <div class="header">
-      <h1>🏗️ Terraform 30-Day Mastery</h1>
-      <p>Build IaC skills with daily Terraform challenges</p>
-      <div class="progress-ring">
-        <svg><circle cx="70" cy="70" r="62" class="bg"></circle><circle cx="70" cy="70" r="62" class="progress" id="progressCircle"></circle></svg>
-        <div class="progress-text" id="progressText">0%</div>
-      </div>
+    <div class="background-decoration">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
     </div>
 
-    <button class="install-prompt show" id="installPrompt">📱 Install App - Get the full native experience!</button>
+    <div class="container">
+        <div class="header">
+            <h1>☁️ Terraform 30-Day Mastery (AWS)</h1>
+            <p>Hands-on AWS infrastructure with Terraform, one day at a time</p>
+            <div class="progress-ring">
+                <svg>
+                    <circle cx="70" cy="70" r="62" class="bg"></circle>
+                    <circle cx="70" cy="70" r="62" class="progress" id="progressCircle"></circle>
+                </svg>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
 
-    <div class="stats">
-      <div class="stat-card"><div class="stat-number" id="currentStreak">0</div><div class="stat-label">Day Streak <span class="streak-fire" id="streakFire" style="display:none;">🔥</span></div></div>
-      <div class="stat-card"><div class="stat-number" id="totalDays">0</div><div class="stat-label">Days Completed</div></div>
+        <button class="install-prompt show" id="installPrompt">📱 Install App for Offline Use</button>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="currentStreak">0</div>
+                <div class="stat-label">Day Streak <span class="streak-fire" id="streakFire" style="display:none;">🔥</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalDays">0</div>
+                <div class="stat-label">Days Completed</div>
+            </div>
+        </div>
+
+        <div class="notification-status notification-disabled" id="notificationStatus">🔔 Enable notifications for daily Terraform reminders</div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="enableNotifications">🔔 Enable Alerts</button>
+            <button class="btn btn-secondary" id="resetProgress">🔄 Reset</button>
+        </div>
+
+        <div class="current-week">
+            <div class="week-nav">
+                <button class="nav-btn" id="prevDay">← Prev</button>
+                <div class="week-title" id="dayTitle">Day 1</div>
+                <button class="nav-btn" id="nextDay">Next →</button>
+            </div>
+            <ul class="task-list" id="taskList"></ul>
+        </div>
+
+        <div id="achievementContainer"></div>
     </div>
 
-    <div class="notification-status notification-disabled" id="notificationStatus">📱 Enable notifications for daily reminders</div>
+    <script>
+        class TerraformDailyTracker {
+            constructor(){
+                this.currentDay = 0;
+                this.completedTasks = {};
+                this.startDate = null;
+                this.notificationsEnabled = false;
+                this.achievements = [];
+                this.deferredPrompt = null;
 
-    <div class="controls">
-      <button class="btn btn-primary" id="enableNotifications">🔔 Enable Alerts</button>
-      <button class="btn btn-secondary" id="resetProgress">🔄 Reset</button>
-    </div>
+                // 30-Day AWS-only Curriculum
+                this.days = [
+                    { title: "Day 1: Setup & AWS Credentials",
+                      tasks: [
+                        { text: "Install Terraform CLI & configure AWS CLI credentials",
+                          time: "Morning (20-30m)",
+                          links: [
+                            {name:"Terraform Install", url:"https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli"},
+                            {name:"AWS CLI Configure", url:"https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html"}
+                          ]},
+                        { text: "Create a working folder & initialize a blank Terraform project (providers, versions)",
+                          time: "Evening (30m)",
+                          links: [
+                            {name:"Provider AWS", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs"},
+                            {name:"Required Providers", url:"https://developer.hashicorp.com/terraform/language/providers/requirements"}
+                          ]}
+                      ]},
 
-    <div class="current-week">
-      <div class="week-nav">
-        <button class="nav-btn" id="prevDay">← Prev</button>
-        <div class="week-title" id="dayTitle">Day 1</div>
-        <button class="nav-btn" id="nextDay">Next →</button>
-      </div>
-      <ul class="task-list" id="taskList"></ul>
-    </div>
+                    { title: "Day 2: First Resource – S3 Bucket",
+                      tasks: [
+                        { text: "Write main.tf to create an S3 bucket with tags",
+                          time: "Morning (30m)",
+                          links: [
+                            {name:"aws_s3_bucket", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket"}
+                          ]},
+                        { text: "Run init/plan/apply and verify in AWS Console",
+                          time: "Evening (20m)",
+                          links: [
+                            {name:"terraform init/plan/apply", url:"https://developer.hashicorp.com/terraform/cli"}
+                          ]}
+                      ]},
 
-    <div id="achievementContainer"></div>
-  </div>
+                    { title: "Day 3: Variables, Outputs & Locals",
+                      tasks: [
+                        { text: "Add variables.tf for region, bucket name; add outputs for bucket ARN",
+                          time: "Morning (30m)",
+                          links: [
+                            {name:"Variables", url:"https://developer.hashicorp.com/terraform/language/values/variables"},
+                            {name:"Outputs", url:"https://developer.hashicorp.com/terraform/language/values/outputs"}
+                          ]},
+                        { text: "Use locals for common tags; refactor",
+                          time: "Evening (25m)",
+                          links: [
+                            {name:"Locals", url:"https://developer.hashicorp.com/terraform/language/values/locals"}
+                          ]}
+                      ]},
 
-  <script>
-    class TerraformDailyTracker {
-      constructor() {
-        this.currentDay = 0;
-        this.completedTasks = {};
-        this.startDate = null;
-        this.notificationsEnabled = false;
-        this.achievements = [];
-        this.deferredPrompt = null;
+                    { title: "Day 4: State & Backends (S3 + DynamoDB)",
+                      tasks: [
+                        { text: "Create remote backend: S3 bucket for state + DynamoDB table for locks",
+                          time: "Morning (40m)",
+                          links: [
+                            {name:"Backends", url:"https://developer.hashicorp.com/terraform/language/settings/backends/s3"}
+                          ]},
+                        { text: "Migrate local state to remote backend",
+                          time: "Evening (20m)",
+                          links: [
+                            {name:"terraform state", url:"https://developer.hashicorp.com/terraform/cli/commands/state"}
+                          ]}
+                      ]},
 
-        // 🔁 Seed curriculum (first 5 days as sample — extend to 30 any time)
-        this.days = [
-          {
-            title: "Day 1: Install & Init",
-            tasks: [
-              { text: "Install Terraform CLI; pick a provider (AWS/Azure/GCP)", time: "Morning (20min)", links: [
-                { name: "Install Terraform", url: "https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli" }
-              ]},
-              { text: "Create a new folder, write a minimal main.tf, run init", time: "Evening (30min)", links: [
-                { name: "CLI Basics", url: "https://developer.hashicorp.com/terraform/cli" }
-              ]}
-            ]
-          },
-          {
-            title: "Day 2: Providers & Resources",
-            tasks: [
-              { text: "Configure a provider block with credentials (env vars)", time: "Morning (30min)", links: [
-                { name: "Providers", url: "https://developer.hashicorp.com/terraform/language/providers" }
-              ]},
-              { text: "Create a simple resource (e.g., S3 bucket / RG)", time: "Evening (30min)", links: [
-                { name: "Resources", url: "https://developer.hashicorp.com/terraform/language/resources" }
-              ]}
-            ]
-          },
-          {
-            title: "Day 3: Variables & Outputs",
-            tasks: [
-              { text: "Add variables.tf and use tfvars", time: "Morning (30min)", links: [
-                { name: "Variables", url: "https://developer.hashicorp.com/terraform/language/values/variables" }
-              ]},
-              { text: "Define outputs for key attributes", time: "Evening (20min)", links: [
-                { name: "Outputs", url: "https://developer.hashicorp.com/terraform/language/values/outputs" }
-              ]}
-            ]
-          },
-          {
-            title: "Day 4: State & Backends",
-            tasks: [
-              { text: "Understand state; add a remote backend", time: "Morning (30min)", links: [
-                { name: "State", url: "https://developer.hashicorp.com/terraform/language/state" },
-                { name: "Backends", url: "https://developer.hashicorp.com/terraform/language/settings/backends/configuration" }
-              ]},
-              { text: "Enable state locking (DynamoDB/Storage Account)", time: "Evening (20min)", links: [] }
-            ]
-          },
-          {
-            title: "Day 5: Modules & DRY",
-            tasks: [
-              { text: "Refactor into a local module", time: "Morning (30min)", links: [
-                { name: "Modules", url: "https://developer.hashicorp.com/terraform/language/modules" }
-              ]},
-              { text: "Try a Registry module & version pinning", time: "Evening (30min)", links: [
-                { name: "Registry", url: "https://registry.terraform.io/" }
-              ]}
-            ]
-          }
-        ];
+                    { title: "Day 5: Data Sources & Dependences",
+                      tasks: [
+                        { text: "Use aws_caller_identity & aws_region data sources",
+                          time: "Morning (20m)",
+                          links: [
+                            {name:"Data Sources", url:"https://developer.hashicorp.com/terraform/language/data-sources"}
+                          ]},
+                        { text: "Understand implicit/explicit depends_on",
+                          time: "Evening (20m)",
+                          links: [
+                            {name:"depends_on", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on"}
+                          ]}
+                      ]},
 
-        this.loadData();
-        this.init();
-        this.setupPWA();
-        this.scheduleNotifications();
-      }
+                    { title: "Day 6: Count, for_each & Conditionals",
+                      tasks: [
+                        { text: "Create multiple S3 buckets via for_each with map variables",
+                          time: "Morning (35m)",
+                          links: [
+                            {name:"for_each", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/for_each"}
+                          ]},
+                        { text: "Use ternary conditionals and functions (format, join)",
+                          time: "Evening (25m)",
+                          links: [
+                            {name:"Expressions", url:"https://developer.hashicorp.com/terraform/language/expressions"}
+                          ]}
+                      ]},
 
-      /* ——— Everything below is the same logic as your Python app ——— */
-      init(){ this.updateUI(); this.bindEvents(); this.checkForAchievements(); }
-      setupPWA(){
-        window.terraformTrackerInstance = this;
-        window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); this.deferredPrompt=e; window.deferredPrompt=e; this.showInstallPrompt(); });
-        const btn=document.getElementById('installPrompt');
-        if(btn){ btn.addEventListener('click',(e)=>{ e.preventDefault(); this.installPWA(); }); }
-        window.addEventListener('appinstalled',()=>{ this.hideInstallPrompt(); this.deferredPrompt=null; window.deferredPrompt=null; });
-        if (window.matchMedia('(display-mode: standalone)').matches) this.hideInstallPrompt();
-      }
-      showInstallPrompt(){ const el=document.getElementById('installPrompt'); if(el){ el.classList.add('show'); el.style.display='block'; } }
-      hideInstallPrompt(){ const el=document.getElementById('installPrompt'); if(el){ el.classList.remove('show'); el.style.display='none'; } }
-      async installPWA(){
-        const p=this.deferredPrompt||window.deferredPrompt;
-        if(!p){ return this.showManualInstallInstructions(); }
-        try{ await p.prompt(); const { outcome }=await p.userChoice; if(outcome==='accepted'){ this.hideInstallPrompt(); this.showNotification('🎉 App installed! Terraform offline ready.'); } }
-        catch{ this.showManualInstallInstructions(); }
-        this.deferredPrompt=null; window.deferredPrompt=null;
-      }
-      showManualInstallInstructions(){
-        const isChrome=/Chrome/.test(navigator.userAgent)&&!/Edg/.test(navigator.userAgent);
-        const isEdge=/Edg/.test(navigator.userAgent);
-        const isSafari=/Safari/.test(navigator.userAgent)&&!/Chrome/.test(navigator.userAgent);
-        let s='Install this app:\n\n';
-        if(isChrome){ s+='Chrome: ⋮ → More tools → Create shortcut → ✓ Open as window'; }
-        else if(isEdge){ s+='Edge: ⋯ → Apps → Install this site as an app'; }
-        else if(isSafari){ s+='Safari: Share → Add to Home Screen'; }
-        else { s+='Browser menu → Install app'; }
-        alert(s);
-      }
-      bindEvents(){
-        document.getElementById('enableNotifications').addEventListener('click',()=>this.enableNotifications());
-        document.getElementById('resetProgress').addEventListener('click',()=>{ if(confirm('Reset all progress?')) this.resetProgress(); });
-        document.getElementById('prevDay').addEventListener('click',()=>{ if(this.currentDay>0){ this.currentDay--; this.updateUI(); this.saveData(); } });
-        document.getElementById('nextDay').addEventListener('click',()=>{ if(this.currentDay<this.days.length-1){ this.currentDay++; this.updateUI(); this.saveData(); } });
-      }
-      updateUI(){ this.renderDay(); this.updateProgress(); this.updateStats(); this.updateNotificationStatus(); this.updateNavButtons(); }
-      updateNavButtons(){ prevDay.disabled=this.currentDay===0; nextDay.disabled=this.currentDay===this.days.length-1; }
-      renderDay(){
-        const d=this.days[this.currentDay]; dayTitle.textContent=d.title; taskList.innerHTML='';
-        d.tasks.forEach((t,i)=>{ const id=`d${this.currentDay}_t${i}`; const done=!!this.completedTasks[id];
-          const li=document.createElement('li'); li.className='task-item';
-          const links=(t.links||[]).map(l=>`<a href="${l.url}" target="_blank" class="task-link">📚 ${l.name}</a>`).join(' ');
-          li.innerHTML=`<div class="task-checkbox ${done?'completed':''}" data-task="${id}"></div>
-            <div class="task-content"><div class="task-text ${done?'completed':''}">${t.text}</div>
-              <div class="task-links">${links}</div><div class="task-time">${t.time}</div></div>`;
-          li.querySelector('.task-checkbox').addEventListener('click',()=>this.toggleTask(id));
-          taskList.appendChild(li);
-        });
-      }
-      toggleTask(id){ this.completedTasks[id]=!this.completedTasks[id]; this.saveData(); this.updateUI(); this.checkForAchievements(); if(this.completedTasks[id]) this.showTaskComplete(); }
-      showTaskComplete(){ document.body.style.background='linear-gradient(135deg,#4ade80 0%,#5c6ac4 100%)'; if(navigator.vibrate) navigator.vibrate(100); setTimeout(()=>document.body.style.background='',400); }
-      updateProgress(){
-        const total=this.days.reduce((s,d)=>s+d.tasks.length,0);
-        const done=Object.values(this.completedTasks).filter(Boolean).length;
-        const pct=Math.round((done/total)*100)||0;
-        const c=document.getElementById('progressCircle'); const R=62, C=2*Math.PI*R, off=C-(pct/100)*C;
-        c.style.strokeDasharray=`${C} ${C}`; c.style.strokeDashoffset=off; progressText.textContent=`${pct}%`;
-      }
-      updateStats(){
-        const streak=this.calculateStreak(), days=this.calculateTotalDays();
-        currentStreak.textContent=streak; totalDays.textContent=days; streakFire.style.display=streak>=3?'inline-block':'none';
-      }
-      calculateStreak(){ let s=0; for(let i=this.currentDay;i>=0;i--){ const d=this.days[i]; const all=d.tasks.every((_,idx)=>this.completedTasks[`d${i}_t${idx}`]); if(all) s++; else break; } return s; }
-      calculateTotalDays(){ let n=0; for(let i=0;i<this.days.length;i++){ const d=this.days[i]; const all=d.tasks.every((_,idx)=>this.completedTasks[`d${i}_t${idx}`]); if(all) n++; } return n; }
-      async enableNotifications(){
-        if(!('Notification' in window)) return alert('Notifications not supported.');
-        const perm=await Notification.requestPermission(); if(perm==='granted'){ this.notificationsEnabled=true; this.saveData(); this.updateNotificationStatus(); this.scheduleNotifications(); this.showNotification('🎉 Notifications enabled for Terraform!'); }
-      }
-      updateNotificationStatus(){ const s=document.getElementById('notificationStatus'); if(this.notificationsEnabled){ s.textContent='✅ Daily notifications enabled'; s.className='notification-status notification-enabled'; } else { s.textContent='📱 Enable notifications for daily reminders'; s.className='notification-status notification-disabled'; } }
-      scheduleNotifications(){ if(!this.notificationsEnabled) return; this.scheduleAt(9,0,"🌅 Morning Terraform practice (20–30m)"); this.scheduleAt(19,0,"🌆 Evening Terraform session — keep the streak!"); }
-      scheduleAt(h,m,msg){ const now=new Date(); const t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0); if(t<=now) t.setDate(t.getDate()+1); const delay=t-now;
-        setTimeout(()=>{ this.showNotification(msg); setInterval(()=>this.showNotification(msg),24*60*60*1000); },delay);
-      }
-      showNotification(body){
-        if(this.notificationsEnabled && 'Notification' in window && Notification.permission==='granted'){
-          new Notification('Terraform Mastery Tracker',{ body, icon: 'tf-icon-192x192.png', badge: 'tf-icon-192x192.png', vibrate:[200,100,200], requireInteraction: false });
+                    { title: "Day 7: VPC – Core Networking",
+                      tasks: [
+                        { text: "Build VPC, subnets, route tables, IGW, NAT Gateway",
+                          time: "Morning (45m)",
+                          links: [
+                            {name:"VPC", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc"},
+                            {name:"Subnet", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet"}
+                          ]},
+                        { text: "Tag resources & output subnet IDs",
+                          time: "Evening (20m)",
+                          links: [{name:"Resource Tagging", url:"https://docs.aws.amazon.com/tag-editor/latest/userguide/tagging.html"}]
+                        }
+                      ]},
+
+                    { title: "Day 8: Security Groups & NACLs",
+                      tasks: [
+                        { text: "Create SGs for web and DB tiers; discuss NACLs vs SGs",
+                          time: "Morning (35m)",
+                          links: [
+                            {name:"aws_security_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group"}
+                          ]},
+                        { text: "Use dynamic blocks for variable ingress rules",
+                          time: "Evening (25m)",
+                          links: [{name:"Dynamic Blocks", url:"https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks"}]
+                        }
+                      ]},
+
+                    { title: "Day 9: EC2 & Key Pairs",
+                      tasks: [
+                        { text: "Launch EC2 with Amazon Linux 2 AMI, SG, and key pair",
+                          time: "Morning (40m)",
+                          links: [
+                            {name:"aws_instance", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance"},
+                            {name:"Key Pair", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair"}
+                          ]},
+                        { text: "Outputs: public_ip, ssh command hint",
+                          time: "Evening (15m)", links: [] }
+                      ]},
+
+                    { title: "Day 10: ALB + Target Groups",
+                      tasks: [
+                        { text: "Create Application Load Balancer & HTTP target group",
+                          time: "Morning (40m)",
+                          links: [
+                            {name:"aws_lb", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb"},
+                            {name:"aws_lb_target_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group"}
+                          ]},
+                        { text: "Listener + security group for ALB",
+                          time: "Evening (20m)",
+                          links: [{name:"aws_lb_listener", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener"}]
+                        }
+                      ]},
+
+                    { title: "Day 11: Auto Scaling Group (ASG)",
+                      tasks: [
+                        { text: "Create Launch Template + ASG spanning subnets",
+                          time: "Morning (45m)",
+                          links: [
+                            {name:"Launch Template", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template"},
+                            {name:"ASG", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group"}
+                          ]},
+                        { text: "Attach to ALB target group",
+                          time: "Evening (15m)", links: [] }
+                      ]},
+
+                    { title: "Day 12: RDS (Postgres)",
+                      tasks: [
+                        { text: "Create RDS subnet group & DB instance (dev-sized)",
+                          time: "Morning (45m)",
+                          links: [
+                            {name:"aws_db_instance", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance"},
+                            {name:"Subnet Group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group"}
+                          ]},
+                        { text: "Parameterize engine version, storage, instance class",
+                          time: "Evening (20m)", links: [] }
+                      ]},
+
+                    { title: "Day 13: ECR + ECS (Optional) or App AMI",
+                      tasks: [
+                        { text: "Create ECR repo and push a sample image (optional)",
+                          time: "Morning (35m)", links: [{name:"aws_ecr_repository", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository"}]},
+                        { text: "(Alt) Build a custom AMI idea with Packer (read-only today)",
+                          time: "Evening (15m)", links: [{name:"Packer on AWS", url:"https://developer.hashicorp.com/packer/plugins/builders/amazon"}]}
+                      ]},
+
+                    { title: "Day 14: CloudWatch & Logs",
+                      tasks: [
+                        { text: "Create log groups and retention, attach to services",
+                          time: "Morning (30m)", links: [{name:"aws_cloudwatch_log_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group"}]},
+                        { text: "Add CloudWatch Alarms for CPU/StatusCheck",
+                          time: "Evening (30m)", links: [{name:"aws_cloudwatch_metric_alarm", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm"}]}
+                      ]},
+
+                    { title: "Day 15: IAM Roles & Policies",
+                      tasks: [
+                        { text: "Create IAM role for EC2; attach policy for S3 read",
+                          time: "Morning (40m)",
+                          links: [
+                            {name:"aws_iam_role", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role"},
+                            {name:"aws_iam_policy", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy"}
+                          ]},
+                        { text: "Use jsonencode for policy docs; outputs for role ARN",
+                          time: "Evening (20m)", links: [] }
+                      ]},
+
+                    { title: "Day 16: SSM Parameter Store & Secrets Manager",
+                      tasks: [
+                        { text: "Store app config in SSM Parameter Store",
+                          time: "Morning (25m)", links: [{name:"aws_ssm_parameter", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter"}]},
+                        { text: "Create a secret in Secrets Manager and reference it",
+                          time: "Evening (25m)", links: [{name:"aws_secretsmanager_secret", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret"}]}
+                      ]},
+
+                    { title: "Day 17: EKS – Cluster Skeleton",
+                      tasks: [
+                        { text: "Create EKS cluster (control plane only) via module",
+                          time: "Morning (45m)",
+                          links: [
+                            {name:"EKS Module (community)", url:"https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest"}
+                          ]},
+                        { text: "Configure aws-auth & outputs (Kubeconfig hint)",
+                          time: "Evening (25m)", links: [] }
+                      ]},
+
+                    { title: "Day 18: VPC Endpoints & S3 Gateway Endpoint",
+                      tasks: [
+                        { text: "Add S3 Gateway Endpoint to VPC for private access",
+                          time: "Morning (30m)", links: [{name:"aws_vpc_endpoint", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint"}]},
+                        { text: "(Optional) Interface endpoints for SSM/EC2",
+                          time: "Evening (20m)", links: [] }
+                      ]},
+
+                    { title: "Day 19: Modules – Create Your Own",
+                      tasks: [
+                        { text: "Extract VPC into a reusable module; add variables/outputs",
+                          time: "Morning (45m)", links: [{name:"Modules", url:"https://developer.hashicorp.com/terraform/language/modules"}]},
+                        { text: "Version your module (semver) and reference via source",
+                          time: "Evening (20m)", links: [{name:"Module Sources", url:"https://developer.hashicorp.com/terraform/language/modules/sources"}]}
+                      ]},
+
+                    { title: "Day 20: Workspaces & Environments",
+                      tasks: [
+                        { text: "Use workspaces (dev/stage/prod) with var overrides",
+                          time: "Morning (35m)", links: [{name:"Workspaces", url:"https://developer.hashicorp.com/terraform/cli/workspaces"}]},
+                        { text: "Discuss alternatives: directories/Terragrunt",
+                          time: "Evening (15m)", links: [] }
+                      ]},
+
+                    { title: "Day 21: Import & Drift",
+                      tasks: [
+                        { text: "terraform import an existing S3 bucket",
+                          time: "Morning (30m)", links: [{name:"Import", url:"https://developer.hashicorp.com/terraform/cli/import"}]},
+                        { text: "Detect drift: plan against remote state; fix",
+                          time: "Evening (30m)", links: [] }
+                      ]},
+
+                    { title: "Day 22: Lifecycle & Replacement Strategies",
+                      tasks: [
+                        { text: "Use lifecycle create_before_destroy / prevent_destroy",
+                          time: "Morning (30m)", links: [{name:"lifecycle", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle"}]},
+                        { text: "Consider timeouts & ignore_changes",
+                          time: "Evening (20m)", links: [] }
+                      ]},
+
+                    { title: "Day 23: Validation & Formatting",
+                      tasks: [
+                        { text: "Add variable validation & preconditions",
+                          time: "Morning (25m)", links: [{name:"Validations", url:"https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules"}]},
+                        { text: "Run fmt/validate; enforce with a pre-commit hook",
+                          time: "Evening (25m)", links: [{name:"Pre-commit Terraform", url:"https://github.com/antonbabenko/pre-commit-terraform"}]}
+                      ]},
+
+                    { title: "Day 24: Security Scanning",
+                      tasks: [
+                        { text: "Integrate tfsec or Checkov to scan IaC",
+                          time: "Morning (30m)", links: [
+                            {name:"tfsec", url:"https://aquasecurity.github.io/tfsec/"},
+                            {name:"Checkov", url:"https://www.checkov.io/"}
+                          ]},
+                        { text: "Fix any critical findings & re-run plan",
+                          time: "Evening (20m)", links: [] }
+                      ]},
+
+                    { title: "Day 25: CI/CD – GitHub Actions",
+                      tasks: [
+                        { text: "Create a workflow to fmt/validate/plan on PR",
+                          time: "Morning (40m)", links: [{name:"GH Actions Terraform", url:"https://github.com/hashicorp/setup-terraform"}]},
+                        { text: "Protect main branch; require plan approval",
+                          time: "Evening (20m)", links: [] }
+                      ]},
+
+                    { title: "Day 26: Cost Awareness",
+                      tasks: [
+                        { text: "Try Infracost for plan cost estimation",
+                          time: "Morning (30m)", links: [{name:"Infracost", url:"https://www.infracost.io/docs/"}]},
+                        { text: "Tagging strategy for cost allocation",
+                          time: "Evening (20m)", links: [{name:"AWS Cost Allocation Tags", url:"https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html"}]}
+                      ]},
+
+                    { title: "Day 27: Advanced Networking (ALB + ASG Revisit)",
+                      tasks: [
+                        { text: "Blue/Green or Rolling strategy idea (read-only)",
+                          time: "Morning (20m)", links: [{name:"ALB Target Groups", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"}]},
+                        { text: "Add health checks & graceful drain",
+                          time: "Evening (30m)", links: [] }
+                      ]},
+
+                    { title: "Day 28: Observability & CloudTrail",
+                      tasks: [
+                        { text: "Enable CloudTrail & S3 logging with SSE",
+                          time: "Morning (35m)", links: [{name:"aws_cloudtrail", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail"}]},
+                        { text: "CloudWatch dashboards/alarms review",
+                          time: "Evening (25m)", links: [] }
+                      ]},
+
+                    { title: "Day 29: KMS & Encryption",
+                      tasks: [
+                        { text: "Create a CMK and use it for S3/RDS encryption",
+                          time: "Morning (35m)", links: [{name:"aws_kms_key", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key"}]},
+                        { text: "Audit encryption-at-rest and in-transit",
+                          time: "Evening (20m)", links: [] }
+                      ]},
+
+                    { title: "Day 30: Capstone & Cleanup",
+                      tasks: [
+                        { text: "Capstone: small 3-tier app (ALB → ASG → RDS) module-based",
+                          time: "Morning (60m)", links: []},
+                        { text: "Document, tag, and practice destroy with safeguards",
+                          time: "Evening (30m)", links: [{name:"Safety with destroy", url:"https://developer.hashicorp.com/terraform/cli/commands/destroy"}]}
+                      ]}
+                ];
+
+                this.loadData();
+                this.init();
+                this.setupPWA();
+                this.scheduleNotifications();
+            }
+
+            init(){ this.updateUI(); this.bindEvents(); this.checkForAchievements(); }
+
+            setupPWA(){
+                window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); this.deferredPrompt = e; this.showInstallPrompt(); });
+                const btn = document.getElementById('installPrompt');
+                if (btn) btn.addEventListener('click', (e)=>{ e.preventDefault(); this.installPWA(); });
+                window.addEventListener('appinstalled', ()=>{ this.hideInstallPrompt(); this.deferredPrompt = null; });
+                if (window.matchMedia('(display-mode: standalone)').matches) this.hideInstallPrompt();
+            }
+            showInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.add('show'); el.style.display='block'; } }
+            hideInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.remove('show'); el.style.display='none'; } }
+            async installPWA(){ if(!this.deferredPrompt){ return this.showManualInstallInstructions(); } try{ await this.deferredPrompt.prompt(); const {outcome}= await this.deferredPrompt.userChoice; if(outcome==='accepted'){ this.hideInstallPrompt(); this.showNotification('🎉 App installed! Available offline.'); } this.deferredPrompt=null; }catch{ this.showManualInstallInstructions(); } }
+            showManualInstallInstructions(){ alert('To install:\n• Chrome/Edge: look for the install icon in the address bar or Menu → Install App.\n• iOS Safari: Share → Add to Home Screen.'); }
+
+            bindEvents(){
+                document.getElementById('enableNotifications').addEventListener('click', ()=> this.enableNotifications());
+                document.getElementById('resetProgress').addEventListener('click', ()=>{ if (confirm('Reset all progress?')) { this.resetProgress(); }});
+                document.getElementById('prevDay').addEventListener('click', ()=>{ if (this.currentDay>0){ this.currentDay--; this.updateUI(); this.saveData(); }});
+                document.getElementById('nextDay').addEventListener('click', ()=>{ if (this.currentDay < this.days.length-1){ this.currentDay++; this.updateUI(); this.saveData(); }});
+            }
+
+            updateUI(){ this.renderDay(); this.updateProgress(); this.updateStats(); this.updateNotificationStatus(); this.updateNavButtons(); }
+            updateNavButtons(){
+                const prev=document.getElementById('prevDay'); const next=document.getElementById('nextDay');
+                prev.disabled = this.currentDay===0; next.disabled = this.currentDay===this.days.length-1;
+            }
+            renderDay(){
+                const day=this.days[this.currentDay];
+                document.getElementById('dayTitle').textContent = day.title;
+                const list=document.getElementById('taskList'); list.innerHTML='';
+                day.tasks.forEach((task, idx)=>{
+                    const id = `d${this.currentDay}_t${idx}`; const done = !!this.completedTasks[id];
+                    const li=document.createElement('li'); li.className='task-item';
+                    const linksHtml = (task.links||[]).map(l=>`<a href="${l.url}" target="_blank" rel="noopener" class="task-link">📚 ${l.name}</a>`).join(' ');
+                    li.innerHTML = `
+                        <div class="task-checkbox ${done?'completed':''}" data-task="${id}"></div>
+                        <div class="task-content">
+                            <div class="task-text ${done?'completed':''}">${task.text}</div>
+                            <div class="task-links">${linksHtml}</div>
+                            <div class="task-time">${task.time}</div>
+                        </div>`;
+                    li.querySelector('.task-checkbox').addEventListener('click', ()=> this.toggleTask(id));
+                    list.appendChild(li);
+                });
+            }
+            toggleTask(id){ this.completedTasks[id] = !this.completedTasks[id]; this.saveData(); this.updateUI(); this.checkForAchievements(); if (this.completedTasks[id]) this._celebrate(); }
+            _celebrate(){ document.body.style.background='linear-gradient(135deg,#22c55e 0%, #0ea5e9 100%)'; if (navigator.vibrate) navigator.vibrate(80); setTimeout(()=>{ document.body.style.background='var(--primary-gradient)'; }, 380); }
+
+            updateProgress(){
+                const total = this.days.reduce((s,d)=> s + d.tasks.length, 0);
+                const done = Object.values(this.completedTasks).filter(Boolean).length;
+                const pct = Math.round((done/total)*100);
+                const circle = document.getElementById('progressCircle');
+                const circumference = 2 * Math.PI * 62;
+                const offset = circumference - (pct/100)*circumference;
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = offset;
+                document.getElementById('progressText').textContent = `${pct}%`;
+            }
+            updateStats(){
+                const streak = this._calcStreak(); const totalDays = this._calcTotalDays();
+                document.getElementById('currentStreak').textContent = streak;
+                document.getElementById('totalDays').textContent = totalDays;
+                document.getElementById('streakFire').style.display = streak>=3 ? 'inline-block' : 'none';
+            }
+            _calcStreak(){ let s=0; for(let i=this.currentDay;i>=0;i--){ const all = this.days[i].tasks.every((_,idx)=> this.completedTasks[`d${i}_t${idx}`]); if(all) s++; else break; } return s; }
+            _calcTotalDays(){ let d=0; for(let i=0;i<this.days.length;i++){ const all = this.days[i].tasks.every((_,idx)=> this.completedTasks[`d${i}_t${idx}`]); if(all) d++; } return d; }
+
+            async enableNotifications(){ if(!('Notification' in window)) return alert('Notifications not supported in this browser.'); const perm = await Notification.requestPermission(); if(perm==='granted'){ this.notificationsEnabled=true; this.saveData(); this.updateNotificationStatus(); this.scheduleNotifications(); this.showNotification('🔔 Notifications enabled for Terraform practice!'); } }
+            updateNotificationStatus(){ const el=document.getElementById('notificationStatus'); if(this.notificationsEnabled){ el.textContent='✅ Daily notifications enabled'; el.className='notification-status notification-enabled'; } else { el.textContent='🔔 Enable notifications for daily Terraform reminders'; el.className='notification-status notification-disabled'; } }
+            scheduleNotifications(){ if(!this.notificationsEnabled) return; this._at(9,0,"🌅 Morning Terraform: 20–30 min" ); this._at(19,0,"🌆 Evening wrap-up: finish today’s tasks"); }
+            _at(h,m,msg){ const now=new Date(); const when = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0); if(when<=now) when.setDate(when.getDate()+1); const delay = when - now; setTimeout(()=>{ this.showNotification(msg); setInterval(()=> this.showNotification(msg), 24*60*60*1000); }, delay); }
+            showNotification(message){ if(this.notificationsEnabled && 'Notification' in window && Notification.permission==='granted'){ new Notification('Terraform Mastery', { body: message, icon: './icon-192x192.png', badge: './icon-192x192.png', vibrate:[200,80,200], requireInteraction:false }); } }
+
+            checkForAchievements(){
+                const done = Object.values(this.completedTasks).filter(Boolean).length;
+                const streak = this._calcStreak();
+                const newOnes = [];
+                if(done>=1 && !this.achievements.includes('first_task')) newOnes.push({id:'first_task', text:'🎯 First task complete!'});
+                if(done>=10 && !this.achievements.includes('ten_tasks')) newOnes.push({id:'ten_tasks', text:'🔟 Ten tasks smashed!'});
+                if(streak>=7 && !this.achievements.includes('streak7')) newOnes.push({id:'streak7', text:'🔥 7-day streak!'});
+                if(done>=60 && !this.achievements.includes('terraform_ace')) newOnes.push({id:'terraform_ace', text:'🏆 Terraform Ace – 30 days complete!'});
+                newOnes.forEach(a=>{ this.achievements.push(a.id); this._showAchievement(a.text); });
+                if(newOnes.length) this.saveData();
+            }
+            _showAchievement(text){ const c=document.getElementById('achievementContainer'); const el=document.createElement('div'); el.className='achievement'; el.textContent=text; c.appendChild(el); if(navigator.vibrate) navigator.vibrate([180,80,180]); setTimeout(()=> el.remove(), 4000); }
+
+            resetProgress(){ this.completedTasks={}; this.startDate=null; this.achievements=[]; this.currentDay=0; this.saveData(); this.updateUI(); }
+            saveData(){ const data = { completedTasks:this.completedTasks, currentDay:this.currentDay, startDate:this.startDate, notificationsEnabled:this.notificationsEnabled, achievements:this.achievements }; localStorage.setItem('terraformTrackerData', JSON.stringify(data)); }
+            loadData(){ const data = JSON.parse(localStorage.getItem('terraformTrackerData') || '{}'); this.completedTasks=data.completedTasks||{}; this.currentDay=data.currentDay||0; this.startDate=data.startDate||new Date().toISOString(); this.notificationsEnabled=!!data.notificationsEnabled; this.achievements=data.achievements||[]; }
         }
-      }
-      checkForAchievements(){
-        const done=Object.values(this.completedTasks).filter(Boolean).length, streak=this.calculateStreak(); const newly=[];
-        if(done>=1 && !this.achievements.includes('first')) newly.push({id:'first',text:'🎯 First Task Complete!'});
-        if(done>=7 && !this.achievements.includes('week')) newly.push({id:'week',text:'📚 Week Warrior - 7 tasks completed!'});
-        if(streak>=7 && !this.achievements.includes('streak')) newly.push({id:'streak',text:'🔥 Streak Master - 7 days in a row!'});
-        if(done>=30 && !this.achievements.includes('half')) newly.push({id:'half',text:'🏗️ Terraform Hero - Halfway there!'});
-        if(done>=60 && !this.achievements.includes('full')) newly.push({id:'full',text:'🏆 Terraform Master - 30 Days Complete!'});
-        newly.forEach(a=>{ this.achievements.push(a.id); this.showAchievement(a.text); });
-        if(newly.length) this.saveData();
-      }
-      showAchievement(t){ const c=document.getElementById('achievementContainer'); const n=document.createElement('div'); n.className='achievement'; n.textContent=t; c.appendChild(n); if(navigator.vibrate) navigator.vibrate([200,100,200]); setTimeout(()=>n.remove(),4000); }
-      resetProgress(){ this.completedTasks={}; this.startDate=null; this.achievements=[]; this.currentDay=0; this.saveData(); this.updateUI(); }
-      saveData(){ localStorage.setItem('terraformTrackerData', JSON.stringify({ completedTasks:this.completedTasks, currentDay:this.currentDay, startDate:this.startDate, notificationsEnabled:this.notificationsEnabled, achievements:this.achievements })); }
-      loadData(){ const d=JSON.parse(localStorage.getItem('terraformTrackerData')||'{}'); this.completedTasks=d.completedTasks||{}; this.currentDay=d.currentDay||0; this.startDate=d.startDate||new Date().toISOString(); this.notificationsEnabled=!!d.notificationsEnabled; this.achievements=d.achievements||[]; }
-    }
-    window.addEventListener('load', ()=>{ new TerraformDailyTracker(); });
-    if('serviceWorker' in navigator){ navigator.serviceWorker.register(window.APP_BASE_PATH+'sw-terraform.js').then(()=>console.log('SW registered tf')).catch(console.warn); }
-  </script>
+
+        window.addEventListener('load', ()=>{ try{ new TerraformDailyTracker(); } catch(e){ console.error('Init error:', e); } });
+
+        // Service Worker registration with repo-aware base path
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register(window.APP_BASE_PATH + 'sw.js')
+                .then(reg => console.log('SW registered at', window.APP_BASE_PATH + 'sw.js'))
+                .catch(err => console.log('SW registration failed:', err));
+        }
+    </script>
 </body>
 </html>
