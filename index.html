@@ -526,17 +526,68 @@
 
             init(){ this.updateUI(); this.bindEvents(); this.checkForAchievements(); }
 
-            setupPWA(){
-                window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); this.deferredPrompt = e; this.showInstallPrompt(); });
-                const btn = document.getElementById('installPrompt');
-                if (btn) btn.addEventListener('click', (e)=>{ e.preventDefault(); this.installPWA(); });
-                window.addEventListener('appinstalled', ()=>{ this.hideInstallPrompt(); this.deferredPrompt = null; });
-                if (window.matchMedia('(display-mode: standalone)').matches) this.hideInstallPrompt();
+            // Replace your existing setupPWA() method with this:
+setupPWA() {
+  // Listen for beforeinstallprompt event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    this.deferredPrompt = e;
+    
+    // Show install button if not already installed
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+      this.showInstallPrompt();
+    }
+  });
+
+  // Handle install button click
+  const installBtn = document.getElementById('installPrompt');
+  if (installBtn) {
+    installBtn.addEventListener('click', () => this.installPWA());
+  }
+
+  // Hide prompt if already installed
+  window.addEventListener('appinstalled', () => {
+    this.hideInstallPrompt();
+    console.log('PWA was installed');
+  });
+  
+  // Initial check for standalone mode
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    this.hideInstallPrompt();
+  }
+}
             }
             showInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.add('show'); el.style.display='block'; } }
             hideInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.remove('show'); el.style.display='none'; } }
-            async installPWA(){ if(!this.deferredPrompt){ return this.showManualInstallInstructions(); } try{ await this.deferredPrompt.prompt(); const {outcome}= await this.deferredPrompt.userChoice; if(outcome==='accepted'){ this.hideInstallPrompt(); this.showNotification('🎉 App installed! Available offline.'); } this.deferredPrompt=null; }catch{ this.showManualInstallInstructions(); } }
-            showManualInstallInstructions(){ alert('To install:\n• Chrome/Edge: look for the install icon in the address bar or Menu → Install App.\n• iOS Safari: Share → Add to Home Screen.'); }
+// Replace your existing installPWA() method with this:
+async installPWA() {
+  if (!this.deferredPrompt) {
+    this.showManualInstallInstructions();
+    return;
+  }
+  
+  try {
+    // Show the install prompt
+    this.deferredPrompt.prompt();
+    
+    // Wait for the user to respond
+    const { outcome } = await this.deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+      this.hideInstallPrompt();
+      this.showNotification('🎉 App installed! Available offline.');
+    } else {
+      console.log('User dismissed the install prompt');
+    }
+    
+    // Clear the deferred prompt
+    this.deferredPrompt = null;
+  } catch (err) {
+    console.error('Error during installation:', err);
+    this.showManualInstallInstructions();
+  }
+}        
 
             bindEvents(){
                 document.getElementById('enableNotifications').addEventListener('click', ()=> this.enableNotifications());
@@ -619,11 +670,22 @@
         window.addEventListener('load', ()=>{ try{ new TerraformDailyTracker(); } catch(e){ console.error('Init error:', e); } });
 
         // Service Worker registration with repo-aware base path
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/TerraformMasteryTracker/sw.js', { scope: '/TerraformMasteryTracker/' })
-                .then(reg => console.log('SW registered at', window.APP_BASE_PATH + 'sw.js'))
-                .catch(err => console.log('SW registration failed:', err));
-        }
+  if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    // Handle GitHub Pages base path
+    const basePath = window.location.pathname.startsWith('/TerraformMasteryTracker') 
+      ? '/TerraformMasteryTracker/' 
+      : '/';
+    
+    navigator.serviceWorker.register(basePath + 'sw.js', { scope: basePath })
+      .then(function(registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      })
+      .catch(function(err) {
+        console.error('ServiceWorker registration failed: ', err);
+      });
+  });
+}
     </script>
 </body>
 </html>
