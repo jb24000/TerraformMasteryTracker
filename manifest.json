@@ -1,23 +1,14 @@
 {
-  "name": "Terraform 30-Day Mastery (AWS)",
+  "name": "Terraform 30-Day Mastery",
   "short_name": "Terraform Mastery",
-  "description": "Master Terraform on AWS in 30 days with daily hands-on tasks",
   "start_url": "/TerraformMasteryTracker/",
   "scope": "/TerraformMasteryTracker/",
+  "id": "/TerraformMasteryTracker/",
   "display": "standalone",
   "background_color": "#0ea5e9",
   "theme_color": "#0ea5e9",
   "icons": [
-    {
-      "src": "/TerraformMasteryTracker/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/TerraformMasteryTracker/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "/TerraformMasteryTracker/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/TerraformMasteryTracker/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
