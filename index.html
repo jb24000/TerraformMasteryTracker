@@ -29,10 +29,7 @@
             if (parts.length > 0) basePath = `/${parts[0]}/`;
         }
         document.addEventListener('DOMContentLoaded', () => {
-            const manifestLink = document.getElementById('manifestLink');
-            manifestLink.href = window.APP_BASE_PATH + 'manifest.json';
-
-        });
+                 });
         window.APP_BASE_PATH = basePath;
     </script>
 
@@ -556,7 +553,6 @@ setupPWA() {
     this.hideInstallPrompt();
   }
 }
-            }
             showInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.add('show'); el.style.display='block'; } }
             hideInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.remove('show'); el.style.display='none'; } }
 // Replace your existing installPWA() method with this:
