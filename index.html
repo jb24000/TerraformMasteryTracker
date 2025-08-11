@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="./icon-192x192.png">
 
     <!-- PWA Manifest (auto-detect base path for GitHub Pages) -->
-    <link rel="manifest" href="manifest.json" id="manifestLink">
+    <link rel="manifest" href="/TerraformMasteryTracker/manifest.json">
     
         <script>
         // Detect base path for GitHub Pages (repo site) vs root (user/org site)
@@ -620,7 +620,7 @@
 
         // Service Worker registration with repo-aware base path
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register(window.APP_BASE_PATH + 'sw.js')
+            navigator.serviceWorker.register('/TerraformMasteryTracker/sw.js', { scope: '/TerraformMasteryTracker/' })
                 .then(reg => console.log('SW registered at', window.APP_BASE_PATH + 'sw.js'))
                 .catch(err => console.log('SW registration failed:', err));
         }
