@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terraform 30-Day Mastery (AWS)</title>
+    <title>Terraform 40-Day Mastery (AWS)</title>
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#0ea5e9">
@@ -141,7 +141,7 @@
 
     <div class="container">
         <div class="header">
-            <h1>☁️ Terraform 30-Day Mastery (AWS)</h1>
+            <h1>☁️ Terraform 40-Day Mastery (AWS)</h1>
             <p>Hands-on AWS infrastructure with Terraform, one day at a time</p>
             <div class="progress-ring">
                 <svg>
@@ -1380,6 +1380,9 @@ async installPWA() {
                 if(done>=60 && !this.achievements.includes('terraform_ace')) newOnes.push({id:'terraform_ace', text:'🏆 Terraform Ace – 30 days complete!'});
                 newOnes.forEach(a=>{ this.achievements.push(a.id); this._showAchievement(a.text); });
                 if(newOnes.length) this.saveData();
+                // In checkForAchievements() method
+                if(done>=80 && !this.achievements.includes('terraform_expert')) 
+                newOnes.push({id:'terraform_expert', text:'🚀 Terraform Expert – 40 days complete!'});
             }
             _showAchievement(text){ const c=document.getElementById('achievementContainer'); const el=document.createElement('div'); el.className='achievement'; el.textContent=text; c.appendChild(el); if(navigator.vibrate) navigator.vibrate([180,80,180]); setTimeout(()=> el.remove(), 4000); }
 
