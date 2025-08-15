@@ -1280,35 +1280,43 @@ setupPWA() {
 }
             showInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.add('show'); el.style.display='block'; } }
             hideInstallPrompt(){ const el = document.getElementById('installPrompt'); if (el){ el.classList.remove('show'); el.style.display='none'; } }
-// Replace your existing installPWA() method with this:
 async installPWA() {
-  if (!this.deferredPrompt) {
-    this.showManualInstallInstructions();
-    return;
-  }
-  
-  try {
-    // Show the install prompt
-    this.deferredPrompt.prompt();
-    
-    // Wait for the user to respond
-    const { outcome } = await this.deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-      this.hideInstallPrompt();
-      this.showNotification('🎉 App installed! Available offline.');
-    } else {
-      console.log('User dismissed the install prompt');
+    if (!this.deferredPrompt) {
+        // Instead of calling non-existent function, show instructions
+        alert('To install this app:\n\n' +
+              '📱 Mobile: Use Share → Add to Home Screen\n' +
+              '💻 Desktop: Look for install icon in address bar\n\n' +
+              'Or try refreshing the page and clicking around first.');
+        return;
     }
     
-    // Clear the deferred prompt
-    this.deferredPrompt = null;
-  } catch (err) {
-    console.error('Error during installation:', err);
-    this.showManualInstallInstructions();
-  }
-}        
+    try {
+        // Show the install prompt
+        this.deferredPrompt.prompt();
+        
+        // Wait for the user to respond
+        const { outcome } = await this.deferredPrompt.userChoice;
+        
+        if (outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+            this.hideInstallPrompt();
+            // Show success message
+            const msg = document.createElement('div');
+            msg.className = 'achievement';
+            msg.textContent = '🎉 App installed! Available offline.';
+            document.getElementById('achievementContainer').appendChild(msg);
+            setTimeout(() => msg.remove(), 4000);
+        } else {
+            console.log('User dismissed the install prompt');
+        }
+        
+        // Clear the deferred prompt
+        this.deferredPrompt = null;
+    } catch (err) {
+        console.error('Error during installation:', err);
+        alert('Installation failed. Try using your browser menu to install.');
+    }
+}
 
             bindEvents(){
                 document.getElementById('enableNotifications').addEventListener('click', ()=> this.enableNotifications());
