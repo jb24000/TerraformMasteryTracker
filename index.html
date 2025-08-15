@@ -194,326 +194,1051 @@
                 this.achievements = [];
                 this.deferredPrompt = null;
 
-                // 30-Day AWS-only Curriculum
-                this.days = [
-                    { title: "Day 1: Setup & AWS Credentials",
-                      tasks: [
-                        { text: "Install Terraform CLI & configure AWS CLI credentials",
-                          time: "Morning (20-30m)",
-                          links: [
-                            {name:"Terraform Install", url:"https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli"},
-                            {name:"AWS CLI Configure", url:"https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html"}
-                          ]},
-                        { text: "Create a working folder & initialize a blank Terraform project (providers, versions)",
-                          time: "Evening (30m)",
-                          links: [
-                            {name:"Provider AWS", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs"},
-                            {name:"Required Providers", url:"https://developer.hashicorp.com/terraform/language/providers/requirements"}
-                          ]}
-                      ]},
+                // Complete 40-Day Terraform Mastery Curriculum
+// Replace your entire this.days array with this version
+// This includes BOTH enhanced Days 1-30 AND bonus Days 31-40
 
-                    { title: "Day 2: First Resource – S3 Bucket",
-                      tasks: [
-                        { text: "Write main.tf to create an S3 bucket with tags",
-                          time: "Morning (30m)",
-                          links: [
-                            {name:"aws_s3_bucket", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket"}
-                          ]},
-                        { text: "Run init/plan/apply and verify in AWS Console",
-                          time: "Evening (20m)",
-                          links: [
-                            {name:"terraform init/plan/apply", url:"https://developer.hashicorp.com/terraform/cli"}
-                          ]}
-                      ]},
+this.days = [
+    // ========== ENHANCED DAYS 1-30 ==========
+    { 
+        title: "Day 1: Setup & AWS Credentials",
+        tasks: [
+            { 
+                text: "Install Terraform CLI & configure AWS CLI credentials",
+                time: "Morning (20-30m)",
+                links: [
+                    {name:"Terraform Install", url:"https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli"},
+                    {name:"AWS CLI Configure", url:"https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html"},
+                    {name:"AWS IAM Best Practices", url:"https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"},
+                    {name:"Terraform AWS Tutorial", url:"https://developer.hashicorp.com/terraform/tutorials/aws-get-started"}
+                ]
+            },
+            { 
+                text: "Create a working folder & initialize a blank Terraform project (providers, versions)",
+                time: "Evening (30m)",
+                links: [
+                    {name:"Provider AWS", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs"},
+                    {name:"Required Providers", url:"https://developer.hashicorp.com/terraform/language/providers/requirements"},
+                    {name:"Version Constraints", url:"https://developer.hashicorp.com/terraform/language/expressions/version-constraints"},
+                    {name:"Provider Configuration", url:"https://developer.hashicorp.com/terraform/language/providers/configuration"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 3: Variables, Outputs & Locals",
-                      tasks: [
-                        { text: "Add variables.tf for region, bucket name; add outputs for bucket ARN",
-                          time: "Morning (30m)",
-                          links: [
-                            {name:"Variables", url:"https://developer.hashicorp.com/terraform/language/values/variables"},
-                            {name:"Outputs", url:"https://developer.hashicorp.com/terraform/language/values/outputs"}
-                          ]},
-                        { text: "Use locals for common tags; refactor",
-                          time: "Evening (25m)",
-                          links: [
-                            {name:"Locals", url:"https://developer.hashicorp.com/terraform/language/values/locals"}
-                          ]}
-                      ]},
+    { 
+        title: "Day 2: First Resource – S3 Bucket",
+        tasks: [
+            { 
+                text: "Write main.tf to create an S3 bucket with tags",
+                time: "Morning (30m)",
+                links: [
+                    {name:"aws_s3_bucket", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket"},
+                    {name:"S3 Bucket ACL", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl"},
+                    {name:"S3 Versioning", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning"},
+                    {name:"S3 Best Practices", url:"https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-best-practices.html"}
+                ]
+            },
+            { 
+                text: "Run init/plan/apply and verify in AWS Console",
+                time: "Evening (20m)",
+                links: [
+                    {name:"terraform init", url:"https://developer.hashicorp.com/terraform/cli/commands/init"},
+                    {name:"terraform plan", url:"https://developer.hashicorp.com/terraform/cli/commands/plan"},
+                    {name:"terraform apply", url:"https://developer.hashicorp.com/terraform/cli/commands/apply"},
+                    {name:"AWS Console S3", url:"https://s3.console.aws.amazon.com/s3/home"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 4: State & Backends (S3 + DynamoDB)",
-                      tasks: [
-                        { text: "Create remote backend: S3 bucket for state + DynamoDB table for locks",
-                          time: "Morning (40m)",
-                          links: [
-                            {name:"Backends", url:"https://developer.hashicorp.com/terraform/language/settings/backends/s3"}
-                          ]},
-                        { text: "Migrate local state to remote backend",
-                          time: "Evening (20m)",
-                          links: [
-                            {name:"terraform state", url:"https://developer.hashicorp.com/terraform/cli/commands/state"}
-                          ]}
-                      ]},
+    { 
+        title: "Day 3: Variables, Outputs & Locals",
+        tasks: [
+            { 
+                text: "Add variables.tf for region, bucket name; add outputs for bucket ARN",
+                time: "Morning (30m)",
+                links: [
+                    {name:"Variables", url:"https://developer.hashicorp.com/terraform/language/values/variables"},
+                    {name:"Variable Types", url:"https://developer.hashicorp.com/terraform/language/expressions/types"},
+                    {name:"Outputs", url:"https://developer.hashicorp.com/terraform/language/values/outputs"},
+                    {name:"Variable Validation", url:"https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules"}
+                ]
+            },
+            { 
+                text: "Use locals for common tags; refactor",
+                time: "Evening (25m)",
+                links: [
+                    {name:"Locals", url:"https://developer.hashicorp.com/terraform/language/values/locals"},
+                    {name:"Default Tags", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs#default_tags"},
+                    {name:"Terraform Functions", url:"https://developer.hashicorp.com/terraform/language/functions"},
+                    {name:"merge() function", url:"https://developer.hashicorp.com/terraform/language/functions/merge"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 5: Data Sources & Dependences",
-                      tasks: [
-                        { text: "Use aws_caller_identity & aws_region data sources",
-                          time: "Morning (20m)",
-                          links: [
-                            {name:"Data Sources", url:"https://developer.hashicorp.com/terraform/language/data-sources"}
-                          ]},
-                        { text: "Understand implicit/explicit depends_on",
-                          time: "Evening (20m)",
-                          links: [
-                            {name:"depends_on", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on"}
-                          ]}
-                      ]},
+    { 
+        title: "Day 4: State & Backends (S3 + DynamoDB)",
+        tasks: [
+            { 
+                text: "Create remote backend: S3 bucket for state + DynamoDB table for locks",
+                time: "Morning (40m)",
+                links: [
+                    {name:"S3 Backend", url:"https://developer.hashicorp.com/terraform/language/settings/backends/s3"},
+                    {name:"State Locking", url:"https://developer.hashicorp.com/terraform/language/state/locking"},
+                    {name:"Backend Config", url:"https://developer.hashicorp.com/terraform/language/settings/backends/configuration"},
+                    {name:"State Best Practices", url:"https://developer.hashicorp.com/terraform/language/state/purpose"}
+                ]
+            },
+            { 
+                text: "Migrate local state to remote backend",
+                time: "Evening (20m)",
+                links: [
+                    {name:"terraform init -migrate-state", url:"https://developer.hashicorp.com/terraform/cli/commands/init#backend-initialization"},
+                    {name:"State Commands", url:"https://developer.hashicorp.com/terraform/cli/commands/state"},
+                    {name:"terraform state pull", url:"https://developer.hashicorp.com/terraform/cli/commands/state/pull"},
+                    {name:"Sensitive Data in State", url:"https://developer.hashicorp.com/terraform/language/state/sensitive-data"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 6: Count, for_each & Conditionals",
-                      tasks: [
-                        { text: "Create multiple S3 buckets via for_each with map variables",
-                          time: "Morning (35m)",
-                          links: [
-                            {name:"for_each", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/for_each"}
-                          ]},
-                        { text: "Use ternary conditionals and functions (format, join)",
-                          time: "Evening (25m)",
-                          links: [
-                            {name:"Expressions", url:"https://developer.hashicorp.com/terraform/language/expressions"}
-                          ]}
-                      ]},
+    { 
+        title: "Day 5: Data Sources & Dependencies",
+        tasks: [
+            { 
+                text: "Use aws_caller_identity & aws_region data sources",
+                time: "Morning (20m)",
+                links: [
+                    {name:"Data Sources", url:"https://developer.hashicorp.com/terraform/language/data-sources"},
+                    {name:"aws_caller_identity", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity"},
+                    {name:"aws_region", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region"},
+                    {name:"aws_availability_zones", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones"}
+                ]
+            },
+            { 
+                text: "Understand implicit/explicit depends_on",
+                time: "Evening (20m)",
+                links: [
+                    {name:"depends_on", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on"},
+                    {name:"Resource Dependencies", url:"https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies"},
+                    {name:"Graph Command", url:"https://developer.hashicorp.com/terraform/cli/commands/graph"},
+                    {name:"Resource Behavior", url:"https://developer.hashicorp.com/terraform/language/resources/behavior"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 7: VPC – Core Networking",
-                      tasks: [
-                        { text: "Build VPC, subnets, route tables, IGW, NAT Gateway",
-                          time: "Morning (45m)",
-                          links: [
-                            {name:"VPC", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc"},
-                            {name:"Subnet", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet"}
-                          ]},
-                        { text: "Tag resources & output subnet IDs",
-                          time: "Evening (20m)",
-                          links: [{name:"Resource Tagging", url:"https://docs.aws.amazon.com/tag-editor/latest/userguide/tagging.html"}]
-                        }
-                      ]},
+    { 
+        title: "Day 6: Count, for_each & Conditionals",
+        tasks: [
+            { 
+                text: "Create multiple S3 buckets via for_each with map variables",
+                time: "Morning (35m)",
+                links: [
+                    {name:"for_each", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/for_each"},
+                    {name:"count", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/count"},
+                    {name:"for expressions", url:"https://developer.hashicorp.com/terraform/language/expressions/for"},
+                    {name:"Splat Expressions", url:"https://developer.hashicorp.com/terraform/language/expressions/splat"}
+                ]
+            },
+            { 
+                text: "Use ternary conditionals and functions (format, join)",
+                time: "Evening (25m)",
+                links: [
+                    {name:"Conditional Expressions", url:"https://developer.hashicorp.com/terraform/language/expressions/conditionals"},
+                    {name:"format() function", url:"https://developer.hashicorp.com/terraform/language/functions/format"},
+                    {name:"join() function", url:"https://developer.hashicorp.com/terraform/language/functions/join"},
+                    {name:"String Functions", url:"https://developer.hashicorp.com/terraform/language/functions#string-functions"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 8: Security Groups & NACLs",
-                      tasks: [
-                        { text: "Create SGs for web and DB tiers; discuss NACLs vs SGs",
-                          time: "Morning (35m)",
-                          links: [
-                            {name:"aws_security_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group"}
-                          ]},
-                        { text: "Use dynamic blocks for variable ingress rules",
-                          time: "Evening (25m)",
-                          links: [{name:"Dynamic Blocks", url:"https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks"}]
-                        }
-                      ]},
+    { 
+        title: "Day 7: VPC – Core Networking",
+        tasks: [
+            { 
+                text: "Build VPC, subnets, route tables, IGW, NAT Gateway",
+                time: "Morning (45m)",
+                links: [
+                    {name:"VPC", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc"},
+                    {name:"Subnet", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet"},
+                    {name:"Internet Gateway", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway"},
+                    {name:"NAT Gateway", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway"}
+                ]
+            },
+            { 
+                text: "Tag resources & output subnet IDs",
+                time: "Evening (20m)",
+                links: [
+                    {name:"Resource Tagging", url:"https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html"},
+                    {name:"VPC Module Example", url:"https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest"},
+                    {name:"CIDR Calculator", url:"https://www.ipaddressguide.com/cidr"},
+                    {name:"Route Table", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 9: EC2 & Key Pairs",
-                      tasks: [
-                        { text: "Launch EC2 with Amazon Linux 2 AMI, SG, and key pair",
-                          time: "Morning (40m)",
-                          links: [
-                            {name:"aws_instance", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance"},
-                            {name:"Key Pair", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair"}
-                          ]},
-                        { text: "Outputs: public_ip, ssh command hint",
-                          time: "Evening (15m)", links: [] }
-                      ]},
+    { 
+        title: "Day 8: Security Groups & NACLs",
+        tasks: [
+            { 
+                text: "Create SGs for web and DB tiers; discuss NACLs vs SGs",
+                time: "Morning (35m)",
+                links: [
+                    {name:"aws_security_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group"},
+                    {name:"SG Rules", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule"},
+                    {name:"Network ACLs", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl"},
+                    {name:"SG vs NACL", url:"https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Security.html"}
+                ]
+            },
+            { 
+                text: "Use dynamic blocks for variable ingress rules",
+                time: "Evening (25m)",
+                links: [
+                    {name:"Dynamic Blocks", url:"https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks"},
+                    {name:"setproduct()", url:"https://developer.hashicorp.com/terraform/language/functions/setproduct"},
+                    {name:"Security Best Practices", url:"https://docs.aws.amazon.com/vpc/latest/userguide/security-best-practices.html"},
+                    {name:"Port Reference", url:"https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 10: ALB + Target Groups",
-                      tasks: [
-                        { text: "Create Application Load Balancer & HTTP target group",
-                          time: "Morning (40m)",
-                          links: [
-                            {name:"aws_lb", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb"},
-                            {name:"aws_lb_target_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group"}
-                          ]},
-                        { text: "Listener + security group for ALB",
-                          time: "Evening (20m)",
-                          links: [{name:"aws_lb_listener", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener"}]
-                        }
-                      ]},
+    { 
+        title: "Day 9: EC2 & Key Pairs",
+        tasks: [
+            { 
+                text: "Launch EC2 with Amazon Linux 2 AMI, SG, and key pair",
+                time: "Morning (40m)",
+                links: [
+                    {name:"aws_instance", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance"},
+                    {name:"Key Pair", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair"},
+                    {name:"AMI Data Source", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami"},
+                    {name:"User Data", url:"https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html"}
+                ]
+            },
+            { 
+                text: "Outputs: public_ip, ssh command hint",
+                time: "Evening (15m)",
+                links: [
+                    {name:"Output Sensitive", url:"https://developer.hashicorp.com/terraform/language/values/outputs#sensitive-suppressing-values-in-cli-output"},
+                    {name:"SSH Troubleshooting", url:"https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html"},
+                    {name:"Instance Types", url:"https://aws.amazon.com/ec2/instance-types/"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 11: Auto Scaling Group (ASG)",
-                      tasks: [
-                        { text: "Create Launch Template + ASG spanning subnets",
-                          time: "Morning (45m)",
-                          links: [
-                            {name:"Launch Template", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template"},
-                            {name:"ASG", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group"}
-                          ]},
-                        { text: "Attach to ALB target group",
-                          time: "Evening (15m)", links: [] }
-                      ]},
+    { 
+        title: "Day 10: ALB + Target Groups",
+        tasks: [
+            { 
+                text: "Create Application Load Balancer & HTTP target group",
+                time: "Morning (40m)",
+                links: [
+                    {name:"aws_lb", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb"},
+                    {name:"aws_lb_target_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group"},
+                    {name:"Health Checks", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html"},
+                    {name:"ALB vs NLB", url:"https://aws.amazon.com/elasticloadbalancing/features/"}
+                ]
+            },
+            { 
+                text: "Listener + security group for ALB",
+                time: "Evening (20m)",
+                links: [
+                    {name:"aws_lb_listener", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener"},
+                    {name:"Listener Rules", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule"},
+                    {name:"SSL/TLS", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_certificate"},
+                    {name:"ALB Logging", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 12: RDS (Postgres)",
-                      tasks: [
-                        { text: "Create RDS subnet group & DB instance (dev-sized)",
-                          time: "Morning (45m)",
-                          links: [
-                            {name:"aws_db_instance", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance"},
-                            {name:"Subnet Group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group"}
-                          ]},
-                        { text: "Parameterize engine version, storage, instance class",
-                          time: "Evening (20m)", links: [] }
-                      ]},
+    { 
+        title: "Day 11: Auto Scaling Group (ASG)",
+        tasks: [
+            { 
+                text: "Create Launch Template + ASG spanning subnets",
+                time: "Morning (45m)",
+                links: [
+                    {name:"Launch Template", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template"},
+                    {name:"ASG", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group"},
+                    {name:"Scaling Policies", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_policy"},
+                    {name:"ASG Best Practices", url:"https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-best-practices.html"}
+                ]
+            },
+            { 
+                text: "Attach to ALB target group",
+                time: "Evening (15m)",
+                links: [
+                    {name:"ASG Attachment", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_attachment"},
+                    {name:"Lifecycle Hooks", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_lifecycle_hook"},
+                    {name:"Warm Pools", url:"https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-warm-pools.html"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 13: ECR + ECS (Optional) or App AMI",
-                      tasks: [
-                        { text: "Create ECR repo and push a sample image (optional)",
-                          time: "Morning (35m)", links: [{name:"aws_ecr_repository", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository"}]},
-                        { text: "(Alt) Build a custom AMI idea with Packer (read-only today)",
-                          time: "Evening (15m)", links: [{name:"Packer on AWS", url:"https://developer.hashicorp.com/packer/plugins/builders/amazon"}]}
-                      ]},
+    { 
+        title: "Day 12: RDS (Postgres)",
+        tasks: [
+            { 
+                text: "Create RDS subnet group & DB instance (dev-sized)",
+                time: "Morning (45m)",
+                links: [
+                    {name:"aws_db_instance", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance"},
+                    {name:"Subnet Group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group"},
+                    {name:"Parameter Group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group"},
+                    {name:"RDS Best Practices", url:"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_BestPractices.html"}
+                ]
+            },
+            { 
+                text: "Parameterize engine version, storage, instance class",
+                time: "Evening (20m)",
+                links: [
+                    {name:"RDS Encryption", url:"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"},
+                    {name:"Backup & Recovery", url:"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.BackupRestore.html"},
+                    {name:"Read Replicas", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#example-usage-replicate-source-db"},
+                    {name:"RDS Proxy", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_proxy"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 14: CloudWatch & Logs",
-                      tasks: [
-                        { text: "Create log groups and retention, attach to services",
-                          time: "Morning (30m)", links: [{name:"aws_cloudwatch_log_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group"}]},
-                        { text: "Add CloudWatch Alarms for CPU/StatusCheck",
-                          time: "Evening (30m)", links: [{name:"aws_cloudwatch_metric_alarm", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm"}]}
-                      ]},
+    { 
+        title: "Day 13: ECR & Container Infrastructure",
+        tasks: [
+            { 
+                text: "Create ECR repo and lifecycle policies",
+                time: "Morning (35m)",
+                links: [
+                    {name:"aws_ecr_repository", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository"},
+                    {name:"ECR Lifecycle", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy"},
+                    {name:"ECR Scanning", url:"https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html"},
+                    {name:"Docker Build", url:"https://docs.docker.com/engine/reference/commandline/build/"}
+                ]
+            },
+            { 
+                text: "ECS Cluster basics or Fargate introduction",
+                time: "Evening (15m)",
+                links: [
+                    {name:"ECS Cluster", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster"},
+                    {name:"ECS vs Fargate", url:"https://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_types.html"},
+                    {name:"Task Definitions", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition"},
+                    {name:"App Runner", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apprunner_service"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 15: IAM Roles & Policies",
-                      tasks: [
-                        { text: "Create IAM role for EC2; attach policy for S3 read",
-                          time: "Morning (40m)",
-                          links: [
-                            {name:"aws_iam_role", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role"},
-                            {name:"aws_iam_policy", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy"}
-                          ]},
-                        { text: "Use jsonencode for policy docs; outputs for role ARN",
-                          time: "Evening (20m)", links: [] }
-                      ]},
+    { 
+        title: "Day 14: CloudWatch & Logs",
+        tasks: [
+            { 
+                text: "Create log groups and retention, attach to services",
+                time: "Morning (30m)",
+                links: [
+                    {name:"aws_cloudwatch_log_group", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group"},
+                    {name:"Log Streams", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_stream"},
+                    {name:"Metric Filters", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter"},
+                    {name:"CloudWatch Insights", url:"https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html"}
+                ]
+            },
+            { 
+                text: "Add CloudWatch Alarms for CPU/StatusCheck",
+                time: "Evening (30m)",
+                links: [
+                    {name:"aws_cloudwatch_metric_alarm", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm"},
+                    {name:"SNS Topic", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic"},
+                    {name:"Dashboard", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_dashboard"},
+                    {name:"Composite Alarms", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_composite_alarm"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 16: SSM Parameter Store & Secrets Manager",
-                      tasks: [
-                        { text: "Store app config in SSM Parameter Store",
-                          time: "Morning (25m)", links: [{name:"aws_ssm_parameter", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter"}]},
-                        { text: "Create a secret in Secrets Manager and reference it",
-                          time: "Evening (25m)", links: [{name:"aws_secretsmanager_secret", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret"}]}
-                      ]},
+    { 
+        title: "Day 15: IAM Roles & Policies",
+        tasks: [
+            { 
+                text: "Create IAM role for EC2; attach policy for S3 read",
+                time: "Morning (40m)",
+                links: [
+                    {name:"aws_iam_role", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role"},
+                    {name:"aws_iam_policy", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy"},
+                    {name:"Policy Attachment", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment"},
+                    {name:"Instance Profile", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile"}
+                ]
+            },
+            { 
+                text: "Use jsonencode for policy docs; outputs for role ARN",
+                time: "Evening (20m)",
+                links: [
+                    {name:"jsonencode()", url:"https://developer.hashicorp.com/terraform/language/functions/jsonencode"},
+                    {name:"IAM Policy Simulator", url:"https://policysim.aws.amazon.com/"},
+                    {name:"aws_iam_policy_document", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document"},
+                    {name:"Assume Role", url:"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use.html"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 17: EKS – Cluster Skeleton",
-                      tasks: [
-                        { text: "Create EKS cluster (control plane only) via module",
-                          time: "Morning (45m)",
-                          links: [
-                            {name:"EKS Module (community)", url:"https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest"}
-                          ]},
-                        { text: "Configure aws-auth & outputs (Kubeconfig hint)",
-                          time: "Evening (25m)", links: [] }
-                      ]},
+    { 
+        title: "Day 16: SSM Parameter Store & Secrets Manager",
+        tasks: [
+            { 
+                text: "Store app config in SSM Parameter Store",
+                time: "Morning (25m)",
+                links: [
+                    {name:"aws_ssm_parameter", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter"},
+                    {name:"SSM Document", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document"},
+                    {name:"Parameter Tiers", url:"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-tiers.html"},
+                    {name:"SSM vs Secrets Manager", url:"https://docs.aws.amazon.com/decision-guides/latest/secrets-manager-vs-parameter-store/secrets-manager-vs-parameter-store.html"}
+                ]
+            },
+            { 
+                text: "Create a secret in Secrets Manager and reference it",
+                time: "Evening (25m)",
+                links: [
+                    {name:"aws_secretsmanager_secret", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret"},
+                    {name:"Secret Version", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version"},
+                    {name:"Rotation", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_rotation"},
+                    {name:"Random Provider", url:"https://registry.terraform.io/providers/hashicorp/random/latest/docs"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 18: VPC Endpoints & S3 Gateway Endpoint",
-                      tasks: [
-                        { text: "Add S3 Gateway Endpoint to VPC for private access",
-                          time: "Morning (30m)", links: [{name:"aws_vpc_endpoint", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint"}]},
-                        { text: "(Optional) Interface endpoints for SSM/EC2",
-                          time: "Evening (20m)", links: [] }
-                      ]},
+    { 
+        title: "Day 17: EKS – Kubernetes on AWS",
+        tasks: [
+            { 
+                text: "Create EKS cluster (control plane) via module",
+                time: "Morning (45m)",
+                links: [
+                    {name:"EKS Module", url:"https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest"},
+                    {name:"EKS Cluster Resource", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster"},
+                    {name:"Node Groups", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group"},
+                    {name:"IRSA", url:"https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html"}
+                ]
+            },
+            { 
+                text: "Configure kubectl & aws-auth ConfigMap",
+                time: "Evening (25m)",
+                links: [
+                    {name:"kubectl Install", url:"https://kubernetes.io/docs/tasks/tools/"},
+                    {name:"aws-auth ConfigMap", url:"https://docs.aws.amazon.com/eks/latest/userguide/auth-configmap.html"},
+                    {name:"EKS Addons", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon"},
+                    {name:"Kubernetes Provider", url:"https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 19: Modules – Create Your Own",
-                      tasks: [
-                        { text: "Extract VPC into a reusable module; add variables/outputs",
-                          time: "Morning (45m)", links: [{name:"Modules", url:"https://developer.hashicorp.com/terraform/language/modules"}]},
-                        { text: "Version your module (semver) and reference via source",
-                          time: "Evening (20m)", links: [{name:"Module Sources", url:"https://developer.hashicorp.com/terraform/language/modules/sources"}]}
-                      ]},
+    { 
+        title: "Day 18: VPC Endpoints & PrivateLink",
+        tasks: [
+            { 
+                text: "Add S3 Gateway Endpoint to VPC for private access",
+                time: "Morning (30m)",
+                links: [
+                    {name:"aws_vpc_endpoint", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint"},
+                    {name:"Endpoint Types", url:"https://docs.aws.amazon.com/vpc/latest/privatelink/endpoint-services-overview.html"},
+                    {name:"S3 Gateway Endpoint", url:"https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html"},
+                    {name:"Route Table Association", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint_route_table_association"}
+                ]
+            },
+            { 
+                text: "Interface endpoints for SSM, EC2, Secrets Manager",
+                time: "Evening (20m)",
+                links: [
+                    {name:"Interface Endpoints", url:"https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html"},
+                    {name:"PrivateLink", url:"https://aws.amazon.com/privatelink/"},
+                    {name:"Endpoint Security", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint_security_group_association"},
+                    {name:"Endpoint Policies", url:"https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-access.html"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 20: Workspaces & Environments",
-                      tasks: [
-                        { text: "Use workspaces (dev/stage/prod) with var overrides",
-                          time: "Morning (35m)", links: [{name:"Workspaces", url:"https://developer.hashicorp.com/terraform/cli/workspaces"}]},
-                        { text: "Discuss alternatives: directories/Terragrunt",
-                          time: "Evening (15m)", links: [] }
-                      ]},
+    { 
+        title: "Day 19: Modules – Create Your Own",
+        tasks: [
+            { 
+                text: "Extract VPC into a reusable module; add variables/outputs",
+                time: "Morning (45m)",
+                links: [
+                    {name:"Module Development", url:"https://developer.hashicorp.com/terraform/language/modules/develop"},
+                    {name:"Module Structure", url:"https://developer.hashicorp.com/terraform/language/modules/develop/structure"},
+                    {name:"Module Composition", url:"https://developer.hashicorp.com/terraform/language/modules/develop/composition"},
+                    {name:"Publishing Modules", url:"https://developer.hashicorp.com/terraform/registry/modules/publish"}
+                ]
+            },
+            { 
+                text: "Version your module (semver) and reference via source",
+                time: "Evening (20m)",
+                links: [
+                    {name:"Module Sources", url:"https://developer.hashicorp.com/terraform/language/modules/sources"},
+                    {name:"Git Sources", url:"https://developer.hashicorp.com/terraform/language/modules/sources#github"},
+                    {name:"Module Versioning", url:"https://developer.hashicorp.com/terraform/language/modules/syntax#version"},
+                    {name:"Module Registry", url:"https://registry.terraform.io/browse/modules"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 21: Import & Drift",
-                      tasks: [
-                        { text: "terraform import an existing S3 bucket",
-                          time: "Morning (30m)", links: [{name:"Import", url:"https://developer.hashicorp.com/terraform/cli/import"}]},
-                        { text: "Detect drift: plan against remote state; fix",
-                          time: "Evening (30m)", links: [] }
-                      ]},
+    { 
+        title: "Day 20: Workspaces & Multi-Environment",
+        tasks: [
+            { 
+                text: "Use workspaces (dev/stage/prod) with var overrides",
+                time: "Morning (35m)",
+                links: [
+                    {name:"Workspaces", url:"https://developer.hashicorp.com/terraform/cli/workspaces"},
+                    {name:"terraform workspace", url:"https://developer.hashicorp.com/terraform/cli/commands/workspace"},
+                    {name:"terraform.workspace", url:"https://developer.hashicorp.com/terraform/language/expressions/references#terraform-workspace"},
+                    {name:"Environment Variables", url:"https://developer.hashicorp.com/terraform/cli/config/environment-variables"}
+                ]
+            },
+            { 
+                text: "Discuss alternatives: directories/Terragrunt/Terraform Cloud",
+                time: "Evening (15m)",
+                links: [
+                    {name:"Terragrunt", url:"https://terragrunt.gruntwork.io/"},
+                    {name:"Terraform Cloud", url:"https://developer.hashicorp.com/terraform/cloud-docs"},
+                    {name:"Directory Structure", url:"https://developer.hashicorp.com/terraform/language/modules/develop/structure#when-to-write-a-module"},
+                    {name:"tfvars Files", url:"https://developer.hashicorp.com/terraform/language/values/variables#variable-definitions-tfvars-files"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 22: Lifecycle & Replacement Strategies",
-                      tasks: [
-                        { text: "Use lifecycle create_before_destroy / prevent_destroy",
-                          time: "Morning (30m)", links: [{name:"lifecycle", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle"}]},
-                        { text: "Consider timeouts & ignore_changes",
-                          time: "Evening (20m)", links: [] }
-                      ]},
+    { 
+        title: "Day 21: Import & State Management",
+        tasks: [
+            { 
+                text: "terraform import an existing S3 bucket or EC2 instance",
+                time: "Morning (30m)",
+                links: [
+                    {name:"terraform import", url:"https://developer.hashicorp.com/terraform/cli/import"},
+                    {name:"Import Block", url:"https://developer.hashicorp.com/terraform/language/import"},
+                    {name:"State mv", url:"https://developer.hashicorp.com/terraform/cli/commands/state/mv"},
+                    {name:"State rm", url:"https://developer.hashicorp.com/terraform/cli/commands/state/rm"}
+                ]
+            },
+            { 
+                text: "Detect drift: plan against remote state; fix discrepancies",
+                time: "Evening (30m)",
+                links: [
+                    {name:"terraform refresh", url:"https://developer.hashicorp.com/terraform/cli/commands/refresh"},
+                    {name:"Drift Detection", url:"https://developer.hashicorp.com/terraform/tutorials/state/resource-drift"},
+                    {name:"State File Format", url:"https://developer.hashicorp.com/terraform/language/state"},
+                    {name:"terraform show", url:"https://developer.hashicorp.com/terraform/cli/commands/show"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 23: Validation & Formatting",
-                      tasks: [
-                        { text: "Add variable validation & preconditions",
-                          time: "Morning (25m)", links: [{name:"Validations", url:"https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules"}]},
-                        { text: "Run fmt/validate; enforce with a pre-commit hook",
-                          time: "Evening (25m)", links: [{name:"Pre-commit Terraform", url:"https://github.com/antonbabenko/pre-commit-terraform"}]}
-                      ]},
+    { 
+        title: "Day 22: Lifecycle & Resource Management",
+        tasks: [
+            { 
+                text: "Use lifecycle create_before_destroy / prevent_destroy",
+                time: "Morning (30m)",
+                links: [
+                    {name:"lifecycle Meta-Argument", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle"},
+                    {name:"replace_triggered_by", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#replace_triggered_by"},
+                    {name:"Resource Timeouts", url:"https://developer.hashicorp.com/terraform/language/resources/syntax#operation-timeouts"},
+                    {name:"null_resource", url:"https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource"}
+                ]
+            },
+            { 
+                text: "Consider timeouts & ignore_changes patterns",
+                time: "Evening (20m)",
+                links: [
+                    {name:"ignore_changes", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#ignore_changes"},
+                    {name:"precondition", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#precondition-and-postcondition"},
+                    {name:"postcondition", url:"https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#precondition-and-postcondition"},
+                    {name:"terraform taint", url:"https://developer.hashicorp.com/terraform/cli/commands/taint"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 24: Security Scanning",
-                      tasks: [
-                        { text: "Integrate tfsec or Checkov to scan IaC",
-                          time: "Morning (30m)", links: [
-                            {name:"tfsec", url:"https://aquasecurity.github.io/tfsec/"},
-                            {name:"Checkov", url:"https://www.checkov.io/"}
-                          ]},
-                        { text: "Fix any critical findings & re-run plan",
-                          time: "Evening (20m)", links: [] }
-                      ]},
+    { 
+        title: "Day 23: Validation & Code Quality",
+        tasks: [
+            { 
+                text: "Add variable validation & preconditions",
+                time: "Morning (25m)",
+                links: [
+                    {name:"Custom Validation", url:"https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules"},
+                    {name:"Type Constraints", url:"https://developer.hashicorp.com/terraform/language/expressions/type-constraints"},
+                    {name:"terraform validate", url:"https://developer.hashicorp.com/terraform/cli/commands/validate"},
+                    {name:"Validation Examples", url:"https://developer.hashicorp.com/terraform/language/expressions/custom-conditions"}
+                ]
+            },
+            { 
+                text: "Run fmt/validate; enforce with pre-commit hooks",
+                time: "Evening (25m)",
+                links: [
+                    {name:"terraform fmt", url:"https://developer.hashicorp.com/terraform/cli/commands/fmt"},
+                    {name:"Pre-commit Terraform", url:"https://github.com/antonbabenko/pre-commit-terraform"},
+                    {name:"TFLint", url:"https://github.com/terraform-linters/tflint"},
+                    {name:"terraform-docs", url:"https://terraform-docs.io/"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 25: CI/CD – GitHub Actions",
-                      tasks: [
-                        { text: "Create a workflow to fmt/validate/plan on PR",
-                          time: "Morning (40m)", links: [{name:"GH Actions Terraform", url:"https://github.com/hashicorp/setup-terraform"}]},
-                        { text: "Protect main branch; require plan approval",
-                          time: "Evening (20m)", links: [] }
-                      ]},
+    { 
+        title: "Day 24: Security Scanning & Compliance",
+        tasks: [
+            { 
+                text: "Integrate tfsec or Checkov to scan IaC",
+                time: "Morning (30m)",
+                links: [
+                    {name:"tfsec", url:"https://aquasecurity.github.io/tfsec/"},
+                    {name:"Checkov", url:"https://www.checkov.io/"},
+                    {name:"Terrascan", url:"https://runterrascan.io/"},
+                    {name:"Sentinel (TF Cloud)", url:"https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement"}
+                ]
+            },
+            { 
+                text: "Fix critical findings & implement security best practices",
+                time: "Evening (20m)",
+                links: [
+                    {name:"AWS Security Best Practices", url:"https://aws.amazon.com/architecture/security-identity-compliance/"},
+                    {name:"CIS AWS Benchmark", url:"https://www.cisecurity.org/benchmark/amazon_web_services"},
+                    {name:"AWS Well-Architected", url:"https://aws.amazon.com/architecture/well-architected/"},
+                    {name:"OWASP for IaC", url:"https://owasp.org/www-project-infrastructure-as-code-security/"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 26: Cost Awareness",
-                      tasks: [
-                        { text: "Try Infracost for plan cost estimation",
-                          time: "Morning (30m)", links: [{name:"Infracost", url:"https://www.infracost.io/docs/"}]},
-                        { text: "Tagging strategy for cost allocation",
-                          time: "Evening (20m)", links: [{name:"AWS Cost Allocation Tags", url:"https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html"}]}
-                      ]},
+    { 
+        title: "Day 25: CI/CD Pipeline",
+        tasks: [
+            { 
+                text: "Create GitHub Actions workflow for fmt/validate/plan",
+                time: "Morning (40m)",
+                links: [
+                    {name:"GitHub Actions Terraform", url:"https://github.com/hashicorp/setup-terraform"},
+                    {name:"Actions Workflow Syntax", url:"https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions"},
+                    {name:"OIDC with AWS", url:"https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services"},
+                    {name:"terraform-plan-comment", url:"https://github.com/marketplace/actions/terraform-plan-comment"}
+                ]
+            },
+            { 
+                text: "Protect main branch; require plan approval & reviews",
+                time: "Evening (20m)",
+                links: [
+                    {name:"Branch Protection", url:"https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches"},
+                    {name:"GitLab CI Alternative", url:"https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html"},
+                    {name:"Jenkins Pipeline", url:"https://www.jenkins.io/doc/book/pipeline/syntax/"},
+                    {name:"Atlantis", url:"https://www.runatlantis.io/"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 27: Advanced Networking (ALB + ASG Revisit)",
-                      tasks: [
-                        { text: "Blue/Green or Rolling strategy idea (read-only)",
-                          time: "Morning (20m)", links: [{name:"ALB Target Groups", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"}]},
-                        { text: "Add health checks & graceful drain",
-                          time: "Evening (30m)", links: [] }
-                      ]},
+    { 
+        title: "Day 26: Cost Optimization",
+        tasks: [
+            { 
+                text: "Try Infracost for plan cost estimation",
+                time: "Morning (30m)",
+                links: [
+                    {name:"Infracost", url:"https://www.infracost.io/docs/"},
+                    {name:"Infracost GitHub Action", url:"https://github.com/infracost/actions"},
+                    {name:"AWS Cost Explorer", url:"https://aws.amazon.com/aws-cost-management/aws-cost-explorer/"},
+                    {name:"terraform-cost-estimation", url:"https://github.com/antonbabenko/terraform-cost-estimation"}
+                ]
+            },
+            { 
+                text: "Implement tagging strategy for cost allocation",
+                time: "Evening (20m)",
+                links: [
+                    {name:"AWS Cost Allocation Tags", url:"https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html"},
+                    {name:"Tagging Best Practices", url:"https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html"},
+                    {name:"AWS Budgets", url:"https://aws.amazon.com/aws-cost-management/aws-budgets/"},
+                    {name:"Cost Anomaly Detection", url:"https://aws.amazon.com/aws-cost-management/aws-cost-anomaly-detection/"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 28: Observability & CloudTrail",
-                      tasks: [
-                        { text: "Enable CloudTrail & S3 logging with SSE",
-                          time: "Morning (35m)", links: [{name:"aws_cloudtrail", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail"}]},
-                        { text: "CloudWatch dashboards/alarms review",
-                          time: "Evening (25m)", links: [] }
-                      ]},
+    { 
+        title: "Day 27: Advanced Deployment Strategies",
+        tasks: [
+            { 
+                text: "Implement Blue/Green deployment pattern",
+                time: "Morning (20m)",
+                links: [
+                    {name:"Blue/Green on AWS", url:"https://docs.aws.amazon.com/whitepapers/latest/blue-green-deployments/welcome.html"},
+                    {name:"ALB Weighted Routing", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html#target-group-routing-configuration"},
+                    {name:"Route53 Weighted", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record#weighted-routing-policy"},
+                    {name:"CodeDeploy Integration", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codedeploy_deployment_group"}
+                ]
+            },
+            { 
+                text: "Add health checks & connection draining",
+                time: "Evening (30m)",
+                links: [
+                    {name:"Target Health", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html"},
+                    {name:"Connection Draining", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html#deregistration-delay"},
+                    {name:"ALB Request Routing", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html#listener-rules"},
+                    {name:"Canary Deployments", url:"https://aws.amazon.com/builders-library/automating-safe-hands-off-deployments/"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 29: KMS & Encryption",
-                      tasks: [
-                        { text: "Create a CMK and use it for S3/RDS encryption",
-                          time: "Morning (35m)", links: [{name:"aws_kms_key", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key"}]},
-                        { text: "Audit encryption-at-rest and in-transit",
-                          time: "Evening (20m)", links: [] }
-                      ]},
+    { 
+        title: "Day 28: Observability & Monitoring",
+        tasks: [
+            { 
+                text: "Enable CloudTrail & S3 access logging",
+                time: "Morning (35m)",
+                links: [
+                    {name:"aws_cloudtrail", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail"},
+                    {name:"S3 Access Logging", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_logging"},
+                    {name:"CloudTrail Insights", url:"https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html"},
+                    {name:"AWS Config", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/config_configuration_recorder"}
+                ]
+            },
+            { 
+                text: "Create CloudWatch dashboards and custom metrics",
+                time: "Evening (25m)",
+                links: [
+                    {name:"CloudWatch Dashboard", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_dashboard"},
+                    {name:"Custom Metrics", url:"https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html"},
+                    {name:"X-Ray Tracing", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/xray_sampling_rule"},
+                    {name:"Container Insights", url:"https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights.html"}
+                ]
+            }
+        ]
+    },
 
-                    { title: "Day 30: Capstone & Cleanup",
-                      tasks: [
-                        { text: "Capstone: small 3-tier app (ALB → ASG → RDS) module-based",
-                          time: "Morning (60m)", links: []},
-                        { text: "Document, tag, and practice destroy with safeguards",
-                          time: "Evening (30m)", links: [{name:"Safety with destroy", url:"https://developer.hashicorp.com/terraform/cli/commands/destroy"}]}
-                      ]}
-                ];
+    { 
+        title: "Day 29: Encryption & Security Hardening",
+        tasks: [
+            { 
+                text: "Create KMS keys and enable encryption everywhere",
+                time: "Morning (35m)",
+                links: [
+                    {name:"aws_kms_key", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key"},
+                    {name:"KMS Alias", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias"},
+                    {name:"KMS Grants", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_grant"},
+                    {name:"EBS Encryption", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_encryption_by_default"}
+                ]
+            },
+            { 
+                text: "Audit encryption at-rest and in-transit compliance",
+                time: "Evening (20m)",
+                links: [
+                    {name:"S3 Bucket Encryption", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration"},
+                    {name:"RDS Encryption", url:"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"},
+                    {name:"ALB HTTPS", url:"https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html"},
+                    {name:"AWS Certificate Manager", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 30: Capstone Project & Production Readiness",
+        tasks: [
+            { 
+                text: "Build complete 3-tier app: ALB → ASG → RDS with modules",
+                time: "Morning (60m)",
+                links: [
+                    {name:"Reference Architecture", url:"https://github.com/aws-samples/aws-refarch-wordpress"},
+                    {name:"terraform-aws-modules", url:"https://github.com/terraform-aws-modules"},
+                    {name:"AWS Architecture Center", url:"https://aws.amazon.com/architecture/"},
+                    {name:"Production Checklist", url:"https://gruntwork.io/guides/foundations/how-to-configure-production-grade-aws-account-structure/"}
+                ]
+            },
+            { 
+                text: "Document, implement DR strategy, and destroy safeguards",
+                time: "Evening (30m)",
+                links: [
+                    {name:"Disaster Recovery", url:"https://aws.amazon.com/disaster-recovery/"},
+                    {name:"Backup Strategies", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/backup_plan"},
+                    {name:"terraform destroy", url:"https://developer.hashicorp.com/terraform/cli/commands/destroy"},
+                    {name:"Terraform Cloud", url:"https://app.terraform.io/signup/account"}
+                ]
+            }
+        ]
+    },
+
+    // ========== BONUS DAYS 31-40 ==========
+    { 
+        title: "Day 31: Terraform Testing",
+        tasks: [
+            { 
+                text: "Write unit tests with Terratest in Go",
+                time: "Morning (45m)",
+                links: [
+                    {name:"Terratest Docs", url:"https://terratest.gruntwork.io/"},
+                    {name:"Testing Examples", url:"https://github.com/gruntwork-io/terratest/tree/master/examples"},
+                    {name:"Go Installation", url:"https://golang.org/doc/install"},
+                    {name:"Testing Best Practices", url:"https://www.hashicorp.com/blog/testing-infrastructure-as-code-with-terraform"}
+                ]
+            },
+            { 
+                text: "Integration testing with Kitchen-Terraform",
+                time: "Evening (30m)",
+                links: [
+                    {name:"Kitchen-Terraform", url:"https://github.com/newcontext-oss/kitchen-terraform"},
+                    {name:"Test Kitchen", url:"https://kitchen.ci/"},
+                    {name:"InSpec AWS", url:"https://github.com/inspec/inspec-aws"},
+                    {name:"Contract Testing", url:"https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run-tasks/run-tasks-integration"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 32: Multi-Region Architecture",
+        tasks: [
+            { 
+                text: "Deploy resources across multiple AWS regions",
+                time: "Morning (45m)",
+                links: [
+                    {name:"Provider Alias", url:"https://developer.hashicorp.com/terraform/language/providers/configuration#alias-multiple-provider-configurations"},
+                    {name:"S3 Cross-Region", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_replication_configuration"},
+                    {name:"Route53 Failover", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_health_check"},
+                    {name:"Global Accelerator", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/globalaccelerator_accelerator"}
+                ]
+            },
+            { 
+                text: "Implement disaster recovery with RDS read replicas",
+                time: "Evening (30m)",
+                links: [
+                    {name:"RDS Cross-Region", url:"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html#USER_ReadRepl.XRgn"},
+                    {name:"Aurora Global", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_global_cluster"},
+                    {name:"DynamoDB Global", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_global_table"},
+                    {name:"DR Patterns", url:"https://aws.amazon.com/blogs/architecture/disaster-recovery-dr-architecture-on-aws-part-i-strategies-for-recovery-in-the-cloud/"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 33: Service Mesh & Advanced Networking",
+        tasks: [
+            { 
+                text: "Implement AWS App Mesh for microservices",
+                time: "Morning (45m)",
+                links: [
+                    {name:"App Mesh", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appmesh_mesh"},
+                    {name:"Virtual Services", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appmesh_virtual_service"},
+                    {name:"Service Discovery", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_service"},
+                    {name:"Cloud Map", url:"https://aws.amazon.com/cloud-map/"}
+                ]
+            },
+            { 
+                text: "Configure Transit Gateway for multi-VPC connectivity",
+                time: "Evening (30m)",
+                links: [
+                    {name:"Transit Gateway", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway"},
+                    {name:"TGW Attachments", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_vpc_attachment"},
+                    {name:"Direct Connect", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dx_gateway"},
+                    {name:"Site-to-Site VPN", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_connection"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 34: Serverless Infrastructure",
+        tasks: [
+            { 
+                text: "Build serverless API with Lambda and API Gateway",
+                time: "Morning (45m)",
+                links: [
+                    {name:"Lambda Function", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function"},
+                    {name:"API Gateway v2", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_api"},
+                    {name:"Lambda Layers", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_layer_version"},
+                    {name:"SAM Alternative", url:"https://aws.amazon.com/serverless/sam/"}
+                ]
+            },
+            { 
+                text: "Event-driven architecture with EventBridge and SQS",
+                time: "Evening (30m)",
+                links: [
+                    {name:"EventBridge", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule"},
+                    {name:"SQS Queue", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue"},
+                    {name:"Step Functions", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sfn_state_machine"},
+                    {name:"DynamoDB Streams", url:"https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 35: Data Pipeline Infrastructure",
+        tasks: [
+            { 
+                text: "Build data lake with S3, Glue, and Athena",
+                time: "Morning (45m)",
+                links: [
+                    {name:"Glue Catalog", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database"},
+                    {name:"Glue Crawler", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_crawler"},
+                    {name:"Athena", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_database"},
+                    {name:"Lake Formation", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_data_lake_settings"}
+                ]
+            },
+            { 
+                text: "Stream processing with Kinesis and EMR",
+                time: "Evening (30m)",
+                links: [
+                    {name:"Kinesis Stream", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_stream"},
+                    {name:"Kinesis Firehose", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_firehose_delivery_stream"},
+                    {name:"EMR Cluster", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/emr_cluster"},
+                    {name:"MSK (Kafka)", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_cluster"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 36: Advanced State Management",
+        tasks: [
+            { 
+                text: "State file surgery and recovery techniques",
+                time: "Morning (30m)",
+                links: [
+                    {name:"State Replace Provider", url:"https://developer.hashicorp.com/terraform/cli/commands/state/replace-provider"},
+                    {name:"Moved Blocks", url:"https://developer.hashicorp.com/terraform/language/modules/develop/refactoring"},
+                    {name:"State Recovery", url:"https://developer.hashicorp.com/terraform/cli/state/recover"},
+                    {name:"terraform force-unlock", url:"https://developer.hashicorp.com/terraform/cli/commands/force-unlock"}
+                ]
+            },
+            { 
+                text: "Implement state file backup and versioning strategy",
+                time: "Evening (20m)",
+                links: [
+                    {name:"S3 Versioning", url:"https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html"},
+                    {name:"State Backup", url:"https://developer.hashicorp.com/terraform/cli/commands/state/pull"},
+                    {name:"State Management", url:"https://developer.hashicorp.com/terraform/cloud-docs/migrate"},
+                    {name:"State Encryption", url:"https://developer.hashicorp.com/terraform/language/state/sensitive-data#recommendations"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 37: Policy as Code",
+        tasks: [
+            { 
+                text: "Implement OPA policies for Terraform",
+                time: "Morning (40m)",
+                links: [
+                    {name:"OPA for Terraform", url:"https://www.openpolicyagent.org/docs/latest/terraform/"},
+                    {name:"Rego Language", url:"https://www.openpolicyagent.org/docs/latest/policy-language/"},
+                    {name:"Conftest", url:"https://www.conftest.dev/"},
+                    {name:"Policy Examples", url:"https://github.com/open-policy-agent/library/tree/master/terraform"}
+                ]
+            },
+            { 
+                text: "AWS Organizations and Service Control Policies",
+                time: "Evening (20m)",
+                links: [
+                    {name:"Organizations", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_organization"},
+                    {name:"SCP", url:"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_policy"},
+                    {name:"Control Tower", url:"https://aws.amazon.com/controltower/"},
+                    {name:"Permission Boundaries", url:"https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 38: Performance Optimization",
+        tasks: [
+            { 
+                text: "Optimize Terraform execution with parallelism and targeting",
+                time: "Morning (30m)",
+                links: [
+                    {name:"Parallelism", url:"https://developer.hashicorp.com/terraform/cli/commands/apply#parallelism-n"},
+                    {name:"Resource Targeting", url:"https://developer.hashicorp.com/terraform/cli/commands/plan#resource-targeting"},
+                    {name:"Refresh Optimization", url:"https://developer.hashicorp.com/terraform/cli/commands/apply#refresh-false"},
+                    {name:"Provider Caching", url:"https://developer.hashicorp.com/terraform/cli/config/config-file#provider_installation"}
+                ]
+            },
+            { 
+                text: "Implement dependency optimization strategies",
+                time: "Evening (20m)",
+                links: [
+                    {name:"Graph Command", url:"https://developer.hashicorp.com/terraform/cli/commands/graph"},
+                    {name:"Module Composition", url:"https://developer.hashicorp.com/terraform/language/modules/develop/composition"},
+                    {name:"Data Source Deps", url:"https://developer.hashicorp.com/terraform/language/data-sources#data-resource-dependencies"},
+                    {name:"Performance Tips", url:"https://developer.hashicorp.com/terraform/cloud-docs/workspaces/performance"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 39: Terraform Cloud/Enterprise",
+        tasks: [
+            { 
+                text: "Migrate to Terraform Cloud workspaces",
+                time: "Morning (40m)",
+                links: [
+                    {name:"TF Cloud Setup", url:"https://developer.hashicorp.com/terraform/cloud-docs/overview"},
+                    {name:"Remote Backend", url:"https://developer.hashicorp.com/terraform/language/settings/backends/remote"},
+                    {name:"Cloud Workspaces", url:"https://developer.hashicorp.com/terraform/cloud-docs/workspaces"},
+                    {name:"VCS Integration", url:"https://developer.hashicorp.com/terraform/cloud-docs/vcs"}
+                ]
+            },
+            { 
+                text: "Implement Sentinel policies and cost estimation",
+                time: "Evening (20m)",
+                links: [
+                    {name:"Sentinel Policies", url:"https://developer.hashicorp.com/sentinel/terraform"},
+                    {name:"Policy Sets", url:"https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets"},
+                    {name:"Cost Estimation", url:"https://developer.hashicorp.com/terraform/cloud-docs/cost-estimation"},
+                    {name:"Run Triggers", url:"https://developer.hashicorp.com/terraform/cloud-docs/workspaces/settings/run-triggers"}
+                ]
+            }
+        ]
+    },
+
+    { 
+        title: "Day 40: Enterprise Patterns & Graduation",
+        tasks: [
+            { 
+                text: "Implement multi-account strategy with cross-account roles",
+                time: "Morning (45m)",
+                links: [
+                    {name:"Account Factory", url:"https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html"},
+                    {name:"Cross-Account IAM", url:"https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html"},
+                    {name:"Gruntwork Refarch", url:"https://gruntwork.io/reference-architecture/"},
+                    {name:"AWS Landing Zone", url:"https://aws.amazon.com/solutions/implementations/aws-landing-zone/"}
+                ]
+            },
+            { 
+                text: "Final review: Production-ready terraform repository",
+                time: "Evening (30m)",
+                links: [
+                    {name:"Production Checklist", url:"https://gruntwork.io/devops-checklist/"},
+                    {name:"Terraform Registry", url:"https://registry.terraform.io/"},
+                    {name:"Best Practices", url:"https://www.terraform-best-practices.com/"},
+                    {name:"Certification", url:"https://www.hashicorp.com/certification/terraform-associate"}
+                ]
+            }
+        ]
+    }
+];
 
                 this.loadData();
                 this.init();
