@@ -1,7 +1,7 @@
 {
-  "name": "Terraform 30-Day Mastery (AWS)",
-  "short_name": "Terraform Mastery",
-  "description": "Master Terraform on AWS in 30 days with daily hands-on tasks",
+  "name": "Terraform 40-Day Mastery (AWS)",
+  "short_name": "Terraform 40",
+  "description": "Master Terraform on AWS in 40 days with daily hands-on tasks",
   "start_url": "/TerraformMasteryTracker/",
   "scope": "/TerraformMasteryTracker/",
   "display": "standalone",
